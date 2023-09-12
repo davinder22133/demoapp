@@ -1,1 +1,88 @@
-<p>show-data works!</p>
+
+<table>
+    <thead>
+      <tr>
+        <!-- <th>Category</th> -->
+        <th *ngFor="let item of data[0] | keyvalue">{{ item.key }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data" >
+        <ng-container *ngFor="let category of row | keyvalue">
+        <td>
+          <div *ngFor="let cell of vast(category)" [attr.rowspan]="maxRowSpan(row)">
+           <div *ngFor="let a of cell|keyvalue">
+            {{a.key}} 
+           </div>
+            
+  
+          </div></td>
+        </ng-container>
+      </tr>
+  
+      
+    </tbody>
+  </table>
+  
+  
+  
+  
+  
+  <!--  ORIGINAL TABLE -->
+  <table *ngIf="apiData">
+    <thead>
+      <tr>
+       
+        <th *ngFor="let item of headers">{{ item  }}</th>
+      </tr>
+    </thead>
+  
+      <tbody>
+        <tr *ngFor="let row of apiData.data" >
+  
+          <td >{{row._id}}</td>
+          
+         
+          
+          <ng-container *ngFor="let category of row.userDetials | keyvalue">
+            <td>
+            <ng-container *ngFor="let cell of vast(category)" class="border">
+              <p class="border">{{ cell|json}} </p>
+              
+            </ng-container>
+          </td>
+  
+         
+          </ng-container>
+          <td>
+          <button (click)="edit()">Edit</button>
+            
+          <button (click)="delete(row._id)">Delete</button>
+        </td>
+        
+        </tr>
+    
+        <!-- <tr>gbvgjh</tr>   -->
+      </tbody>
+  
+   
+  </table>
+  <div *ngIf="!apiData">
+    <!-- Placeholder or loading message -->
+    <p>Loading data...</p>
+  </div>
+  
+  
+  
+  <select [(ngModel)]="selectedOption" (change)="updateBtn()">
+    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+  </select>
+  
+  <p>You selected: {{ selectedOption }}</p>
+  
+  <button (click)="previousPage()" [disabled]="selectedOption=== 1">Previous</button>
+  <span *ngFor="let page of newArray">
+    <button (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+  </span>
+  <button (click)="nextPage()" [disabled]="selectedOption === newArray">Next</button>
+  <button (click)="show()">Show</button>

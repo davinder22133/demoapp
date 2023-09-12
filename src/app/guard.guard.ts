@@ -8,7 +8,9 @@ export const guardGuard: CanActivateFn = (route, state) => {
   const service=inject(CommonService)
   const router=inject(Router);
   let previousUrl;
+  // log
   if(!service.getLocalStorage()){
+
     service.addtoLocalStorage('previousUrl','home')
    
     router.navigate(['/home']);
