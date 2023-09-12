@@ -12,13 +12,15 @@ import { CommonModule } from '@angular/common';
 export class UtilsModule {
 
   URLs:any={
-    checkUserUrl:'http://localhost:4500/Routes/v1/auth/CheckUser',
-    createLead:'http://localhost:4500/Routes/v1/adddetails/lead/',
+    checkUserUrl:'http://localhost:4500/Routes/v1/users/check',
+    createLead:'http://localhost:4500/Routes/v1/lead/createLead/',
     loginUrl:'http://localhost:4500/Routes/v1/auth/login',
     createuserUrl:'http://localhost:4500/Routes/v1/auth/signup',
-    leadFind:'http://localhost:4500/Routes/v1/adddetails/leadfind/',
+    leadFind:'http://localhost:4500/Routes/v1/lead/LeadFind/',
     addUserDetails:'http://localhost:4500/Routes/v1/adddetails/',
     getParticularUser:'http://localhost:4500/Routes/v1/adddetails/get',
+    getLimitedUsers:'http://localhost:4500/Routes/v1/users/getlimited',
+    DeleteUser:'http://localhost:4500/Routes/v1/users/delete'
   }
 
   //  TimerFunction(fn:any,delay:any) {
@@ -32,3 +34,4 @@ export class UtilsModule {
 
 
  }
+ 

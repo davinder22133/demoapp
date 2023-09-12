@@ -37,10 +37,30 @@ export class CommonService {
   }
 
 
-  httpPostRequest(url: any, body: any) {
-    const params = new HttpParams()
-    .set('page', 1)
-    return this.http.post(url, body,{params});
+  httpPostRequest(url: any, body:any=null,params:any=null) {
+    
+    // if(params==null )
+    console.log('params i s ',params,' body is ',body);
+    
+    // return this.http.post('http://localhost:4500/Routes/v1/users/getlimited',{},{params});
+    if(body==null && params!=null){
+      return this.http.post(url,{},{params});
+    }
+   
+    if(params==null && body!=null){
+      console.log('this cpart called');
+      
+    return this.http.post(url, body);
+    }
+    return this.http.post(url,body,{params});
   }
+
+
+  httpDeleteRequest(url:any,body:any){
+    console.log('url is ',url,'bod y is ',body);
+    
+    return this.http.delete(url,body);
+  }
+
 
 }

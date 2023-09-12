@@ -38,11 +38,14 @@ async loginUser(){
     this.service.addtoLocalStorage('login',true);
     this.router.navigate(['/dashboard']);
   }
+  return;
 }
 
 async Submit(){
  
  this.loginUser();
+ console.log('after logui sucess');
+ 
 }
 
 

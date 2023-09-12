@@ -100,6 +100,8 @@ async createuserDetails(){
   submit_btn() {
     this.service.RegisterLoginCheck=false;
    this.createuserDetails();
+
+   
   }
 
   getControlValue(el: any) {

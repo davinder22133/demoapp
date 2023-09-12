@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { CommonService } from '../common.service';
+import { UtilsModule } from '../utils/utils.module';
 
 @Component({
   selector: 'app-show-data',
@@ -9,7 +10,7 @@ import { CommonService } from '../common.service';
 })
 export class ShowDataComponent {
   // data:any='';
-  // headers:any;
+  headers:any=[];
   // constructor( private http: HttpClient) {
   //   const body={email:'abc@gmail.com'}
   //   this.http.post('http://localhost:4500/Routes/v1/adddetails/get', body).subscribe((data) => {
@@ -40,50 +41,80 @@ export class ShowDataComponent {
   //   return this.data.userDetials[el];
   // }
 
-  constructor(private http:HttpClient,private service:CommonService){
+
+  async getData(){
+    const params = new HttpParams()
+    .set('startIndex', '0')  // Use strings as values for parameters
+    .set('endIndex', '10');  // Use strings as values for parameters
+
+this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
+  this.headers.push('Basic Info ');
+  console.log('apidata ois ',this.apiData);
+  
+  let keys=Object.keys(this.apiData.data[0].userDetials)
+  keys=keys.slice(1,keys.length-1)
+  console.log(keys ,' xi s');
+  this.headers=keys;
+ return
+  }
+
+
+  filterSub(Element:any,key:any){
+    // console.log('funcioton called ',Element);
+    let keys:any=[]
+    keys=Object.keys( Element.userDetials[key][0])
+   keys.pop()
+  //  console.log('keys is ',keys);
+   return keys
+   
+  }
+
+
+
+  lengthCount(Element:any,key:any){
+   let keys=Object.keys( Element.userDetials[key][0])
+  //  console.log('Eelemt is ',Element.userDetials[key],'lengt h is ',keys.length);
+   
+    return keys.length-1
+  }
+
+  constructor(private http:HttpClient,private service:CommonService,private utils:UtilsModule){
     console.log("i am called");
+ 
+  
     
-    this.orginalData=this.show()
     
-    console.log("orgiaina daa is ",this.orginalData,);
+   
+
     
   }
-  selectedOption: any= 2; // Variable to store the selected value
-  options: any[] = [1,2,3]; 
-  data :any= [
-    {
-      Education: [{ x: 10, y: 11 },{x:11}],
-      experience: [{ x: 10, y: 11 }],
-      user: [{ x: 10, y: 11 }],
-    },
-    {
-      Education: [{ x: 102, y: 11 },{ x: 102, y: 11 },{ x: 102, y: 11 },{ x: 102, y: 11 }],
-      experience: [{ x: 103, y: 11 }],
-      user: [{ x: 102, y: 11 }],
-    },
-    {
-      Education: [{ x: 104, y: 11 }],
-      experience: [{ x: 105, y: 11 }],
-      user: [{ x: 105, y: 11 }],
-    },
-  ];
+
+  async ngOnInit() { // Assuming this code is in an Angular component
+    // console.log("i am called");
+    this.getData(); 
+  
+    // console.log("i am  last called ",this.apiData);
+  
+  }
+  
+ 
   apiData: any = null;
 
-maxRowSpan(el:any):number{
+// maxRowSpan(el:any):number{
 
-  // console.log("el is ",el);
+//   // console.log("el is ",el);
   
-  let maxlength=el.Education.length;
-  if(maxlength<el.experience.length) maxlength=el.experience.length;
-  if(maxlength<el.user.length) maxlength=el.user.length;
-  return maxlength
+//   let maxlength=el.Education.length;
+//   if(maxlength<el.experience.length) maxlength=el.experience.length;
+//   if(maxlength<el.user.length) maxlength=el.user.length;
+//   return maxlength
   
-}
-  length(el:any,length:any):number{
-    return el.value.length;
-  }
+// }
+  // length(el:any,length:any):number{
+  //   return el.value.length;
+  // }
 
-  headers:any=[];
+//   headers:any=[];
   vast(el:any,length=''):any{
    
     // console.log("el is ",el);
@@ -91,147 +122,161 @@ maxRowSpan(el:any):number{
       return el.value;
     }
     return [];
-   
+  }
   
+
+  Value(object:any,key:any){
+    // console.log('object is ',object,' key is ',key,' value is ',object[key]);
     
-    return this.data[el];
+    return object[key];
   }
-  currentPage = 1;
-  // startIndex:any=0;
-  startIndex :any= (this.currentPage - 1) * this.selectedOption;
-  endIndex = this?.startIndex + this.selectedOption;
-  TotalCount:any=0;
-  updateBtn(){
-    // console.log("Data count is ",this.apiData.count);
-    this.newArray=[];
-for (let i = 1; i <=(this.TotalCount/this.selectedOption); i++) {
-  this.newArray.push(i);
-}
-
-
-console.log("this new array is ",this.newArray);
-
-
-  }
-
-  newArray:any=null;
-// endIndex:any=this.selectedOption;
-  ngOnInit() {
-    // Fetch data from your API and assign it to apiData when it's available
-    // let data = { startIndex: this.startIndex, endIndex:this.endIndex  };
-    console.log("this startindex is ",this.startIndex, " end index is ",this.endIndex);
     
-    let params = new HttpParams();
-    params = params.set('startIndex', this.startIndex);
-    params = params.set('endIndex', this.endIndex);
+//     return this.data[el];
+//   }
+//   currentPage = 1;
+//   // startIndex:any=0;
+//   startIndex :any= (this.currentPage - 1) * this.selectedOption;
+//   endIndex = this?.startIndex + this.selectedOption;
+//   TotalCount:any=0;
+//   updateBtn(){
+//     // console.log("Data count is ",this.apiData.count);
+//     this.newArray=[];
+// for (let i = 1; i <=(this.TotalCount/this.selectedOption); i++) {
+//   this.newArray.push(i);
+// }
 
-    console.log("param is ",params);
+
+// console.log("this new array is ",this.newArray);
+
+
+//   }
+
+//   newArray:any=null;
+// // endIndex:any=this.selectedOption;
+//   ngOnInit() {
+//     // Fetch data from your API and assign it to apiData when it's available
+//     // let data = { startIndex: this.startIndex, endIndex:this.endIndex  };
+//     console.log("this startindex is ",this.startIndex, " end index is ",this.endIndex);
+    
+//     let params = new HttpParams();
+//     params = params.set('startIndex', this.startIndex);
+//     params = params.set('endIndex', this.endIndex);
+
+//     console.log("param is ",params);
     
    
-    const obv = this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{params})
+//     const obv = this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{params})
     
-    obv.subscribe((data:any) => {
-      this.apiData = data;
-      console.log("apiiii data is ",this.apiData);
-      // const newArray = [];
-      console.log("Data count is ",this.apiData.count);
-      this.TotalCount=this.apiData.count;
-      this.newArray=[];
-  for (let i = 1; i <=(this.apiData.count/this.selectedOption); i++) {
-    this.newArray.push(i);
-  }
+//     obv.subscribe((data:any) => {
+//       this.apiData = data;
+//       console.log("apiiii data is ",this.apiData);
+//       // const newArray = [];
+//       console.log("Data count is ",this.apiData.count);
+//       this.TotalCount=this.apiData.count;
+//       this.newArray=[];
+//   for (let i = 1; i <=(this.apiData.count/this.selectedOption); i++) {
+//     this.newArray.push(i);
+//   }
 
-  console.log("nedwArray is ",this.newArray);
+//   console.log("nedwArray is ",this.newArray);
   
-  // return newArray;
-      this.headers=Object.keys(this.apiData.data[0].userDetials);
+//   // return newArray;
+//       this.headers=Object.keys(this.apiData.data[0].userDetials);
    
-       this.headers.pop();
-       this.filterData();
-    });
-  }
-  orginalData:any=[];
+//        this.headers.pop();
+//        this.filterData();
+//     });
+//   }
+//   orginalData:any=[];
 
 
-  // itemsPerPage = 10;
+//   // itemsPerPage = 10;
 
 
-  updatePagedIndex() {
-    this.startIndex = (this.currentPage - 1) * this.selectedOption;
-    this. endIndex = this.startIndex + this.selectedOption;
-    this.show();
-    // this.newArray = this.data.slice(startIndex, endIndex);
-  }
+//   updatePagedIndex() {
+//     this.startIndex = (this.currentPage - 1) * this.selectedOption;
+//     this. endIndex = this.startIndex + this.selectedOption;
+//     this.show();
+//     // this.newArray = this.data.slice(startIndex, endIndex);
+//   }
 
-  async show(){
-    // const params = new HttpParams().set('startIndex', this.startIndex).set('endIndex', this.endIndex);
-    let param=new HttpParams();
-    param=param.append("startIndex",0);
-  await this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{param}).toPromise().then((El)=>{
-    // console.log("el count is ",El);
+//   async show(){
+//     // const params = new HttpParams().set('startIndex', this.startIndex).set('endIndex', this.endIndex);
+//     let param=new HttpParams();
+//     param=param.append("startIndex",0);
+//   await this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{param}).toPromise().then((El)=>{
+//     // console.log("el count is ",El);
     
-    return El;
-  })
+//     return El;
+//   })
    
-  }
+//   }
  
 
-  previousPage(){
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagedIndex();
-    }
-  }
+//   previousPage(){
+//     if (this.currentPage > 1) {
+//       this.currentPage--;
+//       this.updatePagedIndex();
+//     }
+//   }
 
-  goToPage(pageNumber:any){
-    if (pageNumber >= 1 && pageNumber <= this.newArray/this.selectedOption) {
-      this.currentPage = pageNumber;
-      this.updatePagedIndex();
-    }
-  }
+//   goToPage(pageNumber:any){
+//     if (pageNumber >= 1 && pageNumber <= this.newArray/this.selectedOption) {
+//       this.currentPage = pageNumber;
+//       this.updatePagedIndex();
+//     }
+//   }
 
 
-  nextPage(){
-    if (this.currentPage < this.newArray.length) {
-      this.currentPage++;
-      this.updatePagedIndex();
-      this.show();
-    }
-  }
+//   nextPage(){
+//     if (this.currentPage < this.newArray.length) {
+//       this.currentPage++;
+//       this.updatePagedIndex();
+//       this.show();
+//     }
+//   }
   
-  filterData(){
+//   filterData(){
 
-    let data:any=[];
-      this.apiData.data.map((el:any)=>{
-        console.log("el is ",el);
-        // data.id=[].el._id;
-        let arr:any={};
-        arr._id=el._id;
-        data.push(arr);
-        // console.log(el.userDetials.);
-        console.log("flaterd is ",el.userDetials.Address.flat());
+//     let data:any=[];
+//       this.apiData.data.map((el:any)=>{
+//         console.log("el is ",el);
+//         // data.id=[].el._id;
+//         let arr:any={};
+//         arr._id=el._id;
+//         data.push(arr);
+//         // console.log(el.userDetials.);
+//         console.log("flaterd is ",el.userDetials.Address.flat());
         
         
 
-      })
+//       })
 
-      console.log("data is ",data);
+//       console.log("data is ",data);
       
 
-  }
+//   }
 
 
-  delete(id:any){
-    const body={_id:id};
-  this.http.post('http://localhost:4500/Routes/v1/adddetails/delete',body).subscribe((el)=>{
-    console.log("data is ",el);
+//   delete(id:any){
+//     const body={_id:id};
+//   this.http.post('http://localhost:4500/Routes/v1/adddetails/delete',body).subscribe((el)=>{
+//     console.log("data is ",el);
     
-  })
-  }
+//   })
+//   }
 
 
-  edit(){
+//   edit(){
     
-  }
+//   }
+
+
+delete(row:any){
+console.log('de;ete row is ',row._id);
+const body={_id:row._id}
+this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body);
+
+}
 
 }
