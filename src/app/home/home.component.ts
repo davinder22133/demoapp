@@ -21,6 +21,11 @@ export class HomeComponent {
       email: new FormControl('',[Validators.required,Validators.email]),
     
     });
+
+    if(service.getLocalStorage()){
+      this.form.get('email')?.setValue(service.getLocalStorage().EmailEntered);
+    }
+
   }
 
 
@@ -29,13 +34,14 @@ export class HomeComponent {
     const body={email:this.service.getLocalStorage().EmailEntered};
     
     
-   
+  //  CHECK USER EXIST IN DB OR NOT
     let response=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
     console.log("response si ",response); // response.data is not accessbile
     this.HttpResponse=response;
     
     if(!this.HttpResponse.data){
       
+      // CREATE LEAD
      let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
     
     

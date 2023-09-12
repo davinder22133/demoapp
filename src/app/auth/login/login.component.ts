@@ -25,6 +25,7 @@ export class LoginComponent {
 
 async loginUser(){
   const body={email:this.form.get('email')?.value,Password:this.form.get('password')?.value}
+  // LOGIN USER
   let response= await this.service.httpPostRequest(this.utils.URLs.loginUrl,body).toPromise()
   this.HttpResponse=response;
   
@@ -34,11 +35,13 @@ async loginUser(){
   }
 
   else{
+    this.service.addtoLocalStorage('login',true);
     this.router.navigate(['/dashboard']);
   }
 }
 
 async Submit(){
+ 
  this.loginUser();
 }
 

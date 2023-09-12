@@ -7,20 +7,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { UtilsModule } from './utils/utils.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { guardGuard } from './guard.guard';
+import { ShowDataComponent } from './show-data/show-data.component';
 const routes: Routes = [
 
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent ,canActivate:[guardGuard]},
   {
     path: '',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent ,canActivate:[guardGuard]},
 ];
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    ShowDataComponent
   ],
   imports: [
     BrowserModule,

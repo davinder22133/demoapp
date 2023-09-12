@@ -1,0 +1,108 @@
+
+
+
+.container {
+    /* max-width: 600px; */
+    /* min-width: 100%;
+     */
+     min-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    /* background-color: red; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .top-btns{
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+      justify-content: space-around;
+
+  }
+
+
+  .common{
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+  }
+
+  .green{
+    color: black !important;
+    background-color: #BEADFA !important;  
+  }
+
+  
+  /* Style the form header */
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style each address group */
+  .form-group {
+    margin-bottom: 15px;
+    /* background-color: green; */
+    /* min-width: 100%; */
+  }
+  
+  /* Label styling */
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Input field styling */
+  input[type="text"] ,input[type="number"]{
+    min-width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Button styling */
+  .btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    margin-right: 10px;
+  }
+  
+  .btn-success {
+    background-color: #040D12;
+    color: white;
+  }
+  
+  .btn-primary {
+    background-color:  #040D12;
+    color: white;
+  }
+  
+  .btn-danger {
+    background-color:  #040D12;
+    color: white;
+  }
+  
+  /* Add address button */
+  .btn-success {
+    margin-bottom: 15px;
+  }
+  
+  /* Remove address button */
+  .btn-danger {
+    margin-top: 10px;
+  }
+  
+  /* Form validation error messages */
+  .small.invalid {
+    color:  #040D12;
+    font-size: 14px;
+  }
+  

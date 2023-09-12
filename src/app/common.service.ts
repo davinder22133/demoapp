@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -38,7 +38,9 @@ export class CommonService {
 
 
   httpPostRequest(url: any, body: any) {
-    return this.http.post(url, body);
+    const params = new HttpParams()
+    .set('page', 1)
+    return this.http.post(url, body,{params});
   }
 
 }

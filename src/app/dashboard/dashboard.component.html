@@ -1,1 +1,266 @@
-<p>dashboard works!</p>
+<div class="top-btns">
+  <button class="btn btn-primary" [ngClass]="check==0 ?'green': ''">Address Details</button>
+  <button class="btn btn-primary" [ngClass]="check==1 ?'green': ''">Education Details</button>
+  <button class="btn btn-primary" [ngClass]="check==2 ?'green': ''">Experience Details</button>
+</div>
+
+
+<button (click)="logout()">Logout</button>
+<button (click)="PatchData()">PrintData</button>
+<div class="container">
+  <!-- <h2>Add Address Details</h2> -->
+
+
+
+
+  <form [formGroup]="UserDetails">
+
+
+    <div class="address-section" *ngIf="check==0">
+      <h2>Add Address Details</h2>
+
+      <div formArrayName="Address">
+        <ng-container *ngFor="let addressGroup of UserDetails.get('Address').controls; let i = index" class="common">
+
+          <div formGroupName="{{i}}" class="blue">
+            <div class="form-group">
+              <label for="houseNo">House Number</label>
+              <input type="text" id="houseNo" formControlName="houseNo" class="form-control" />
+              <small
+                *ngIf="Validator('Address',i).get('houseNo').hasError('required') && Validator('Address',i).get('houseNo')?.touched"
+                class="invalid">House no required.</small>
+
+              <!-- <small
+                *ngIf="!form.get('password')?.hasError('required') && form.get('password')?.touched && form.get('password')?.hasError('pattern')"
+                class="invalid">Password Not Valid.</small> -->
+
+            </div>
+            <div class="form-group">
+              <label for="streetNo">Street Number</label>
+              <input type="number" id="streetNo" formControlName="StreetNo" class="form-control" />
+              <small
+                *ngIf="Validator('Address',i).get('StreetNo').hasError('required') && Validator('Address',i).get('StreetNo')?.touched"
+                class="invalid">Street no required.</small>
+
+
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" formControlName="City" class="form-control" />
+              <small
+                *ngIf="Validator('Address',i).get('City').hasError('required') && Validator('Address',i).get('City')?.touched"
+                class="invalid">City name required.</small>
+            </div>
+            <div class="form-group">
+              <label for="state">State</label>
+              <input type="text" id="state" formControlName="State" class="form-control" />
+              <small
+                *ngIf="Validator('Address',i).get('State').hasError('required') && Validator('Address',i).get('State')?.touched"
+                class="invalid">State name required.</small>
+            </div>
+            <div class="form-group">
+              <label for="country">Country</label>
+              <input type="text" id="country" formControlName="Country" class="form-control" />
+              <small
+                *ngIf="Validator('Address',i).get('Country').hasError('required') && Validator('Address',i).get('Country')?.touched"
+                class="invalid">Country name required.</small>
+            </div>
+          </div>
+
+
+
+
+          <button (click)="removeAddress(i,'Address')" type="button" *ngIf="i > 0" class="btn btn-danger"
+            style="margin-bottom: 20px;">Remove</button>
+          <button (click)="addForm('Address')" type="button" class="btn btn-success">Add</button>
+
+        </ng-container>
+      </div>
+    </div>
+
+
+
+
+    <!-- EDUCTION SECTION -->
+    <div class="Education-section" *ngIf="check==1">
+      <h2>Add Education Details</h2>
+      <div formArrayName="Education">
+        <div *ngFor="let addressGroup of getControlValue('Education'); let i = index" class="common">
+          <div formGroupName="{{i}}">
+
+
+            <div class="form-group">
+              <label for="school/college">SchoolName/CollegeName</label>
+              <input type="text" id="school/college" formControlName="SchoolName_CollegeName" class="form-control" />
+              <small
+                *ngIf="Validator('Education',i).get('SchoolName_CollegeName').hasError('required') && Validator('Education',i).get('SchoolName_CollegeName')?.touched"
+                class="invalid">SchoolName/CollegeName required.</small>
+            </div>
+            <div class="form-group">
+              <label for="Percentage/CGPA">Percentage/CGPA</label>
+              <input type="number" id="Percentage/CGPA" formControlName="Percentage_CGPA" class="form-control" />
+              <small
+                *ngIf="Validator('Education',i).get('Percentage_CGPA').hasError('required') && Validator('Education',i).get('Percentage_CGPA')?.touched"
+                class="invalid">Percentage/CGPA required.</small>
+            </div>
+            <div class="form-group">
+              <label for="Class_Degree">Class_Degree</label>
+              <input type="text" id="Class_Degree" formControlName="Class_Degree" class="form-control" />
+              <small
+                *ngIf="Validator('Education',i).get('Class_Degree').hasError('required') && Validator('Education',i).get('Class_Degree')?.touched"
+                class="invalid">Class_Degree required.</small>
+            </div>
+            <div [formGroupName]="'Year'">
+              <div class="form-group">
+                <label for="Yearto">To</label>
+                <input type="date" id="Yearto" formControlName="To" class="form-control" />
+                <br>
+                <small
+                  *ngIf="Validator('Education',i).get('Year').get('To').hasError('required') && Validator('Education',i).get('Year').get('To')?.touched"
+                  class="invalid">To date required required.</small>
+
+              </div>
+
+              <div class="form-group">
+                <label for="From">From</label>
+                <input type="date" id="From" formControlName="From" class="form-control" />
+
+                <br>
+                <small
+                  *ngIf="Validator('Education',i).get('Year').get('From').hasError('required') && Validator('Education',i).get('Year').get('From')?.touched"
+                  class="invalid">From date required required.</small>
+
+              </div>
+
+
+
+            </div>
+          </div>
+
+          <button (click)="removeAddress(i,'Education')" *ngIf="i!=0" type="button" class="btn btn-danger"
+            style="margin-bottom: 20px;">Remove</button>
+          <button (click)="addForm('Education')" type="button" class="btn btn-success">Add</button>
+
+          <!-- <button (click)="removeAddress(i)" type="button" class="btn btn-danger">Remove</button> -->
+        </div>
+      </div>
+      <!-- <button (click)="addAddress()" type="button" class="btn btn-success">Add Address</button>
+          <button type="submit" class="btn btn-primary">Submit</button> -->
+
+    </div>
+
+
+
+    <!-- EXPRERICE SECTION -->
+    <div class="Experice-section" *ngIf="check==2">
+      <h2>Add Experience Details</h2>
+      <div formArrayName="Experience">
+        <div *ngFor="let addressGroup of getControlValue('Experience'); let i = index">
+          <div formGroupName="{{i}}">
+            <div class="form-group">
+              <label for="CompanyName">CompanyName</label>
+              <input type="text" id="CompanyName" formControlName="CompanyName" class="form-control" />
+
+              <small
+                *ngIf="Validator('Experience',i).get('CompanyName').hasError('required') && Validator('Experience',i).get('CompanyName')?.touched"
+                class="invalid">CompanyName required.</small>
+
+            </div>
+
+            <div class="form-group">
+              <label for="Designation">Designation</label>
+              <input type="text" id="Class/Degree" formControlName="Designation" class="form-control" />
+
+              <small
+                *ngIf="Validator('Experience',i).get('Designation').hasError('required') && Validator('Experience',i).get('Designation')?.touched"
+                class="invalid">Designation required.</small>
+
+            </div>
+
+
+            <div [formGroupName]="'Year'">
+              <div class="form-group">
+                <label for="Yearto">To</label>
+                <input type="date" id="Yearto" formControlName="To" class="form-control" />
+                <br>
+                <small
+                  *ngIf="Validator('Experience',i).get('Year').get('To').hasError('required') && Validator('Experience',i).get('Year').get('To')?.touched"
+                  class="invalid">To date required required.</small>
+
+              </div>
+
+              <div class="form-group">
+                <label for="From">From</label>
+                <input type="date" id="From" formControlName="From" class="form-control" />
+
+                <br>
+                <small
+                  *ngIf="Validator('Experience',i).get('Year').get('From').hasError('required') && Validator('Experience',i).get('Year').get('From')?.touched"
+                  class="invalid">From date required required.</small>
+
+              </div>
+
+
+
+            </div>
+
+            <!-- <div formGroupName="Year'">
+    
+                <div class="form-group">
+                  <label for="From">From</label>
+                  <input type="date" id="From" formControlName="From" class="form-control" />
+                  <br>
+                  <br>
+                  <small
+                  *ngIf="Validator('Experience',i).get('Year').get('From').hasError('required') && Validator('Experience',i).get('Year').get('From')?.touched"
+                  class="invalid">From date required required.</small>
+               
+                </div>
+    
+                <div class="form-group">
+                  <label for="Yearto">To</label>
+                  <input type="date" id="Yearto" formControlName="To" class="form-control" />
+                  <small
+                  *ngIf="Validator('Experience',i).get('Year').get('To').hasError('required') && Validator('Experience',i).get('Year').get('To')?.touched"
+                  class="invalid">To date required required.</small>
+               
+               
+                </div>
+               
+    
+              </div> -->
+
+            <!-- <button (click)="removeAddress(i,'Experience')" *ngIf="i!=0" type="button" class="btn btn-danger"
+              style="margin-bottom: 20px;">Remove</button>
+
+            <button (click)="addForm('Experience')" type="button" class="btn btn-success">Add</button> -->
+
+          </div>
+
+          
+          <button (click)="removeAddress(i,'Experience')" *ngIf="i!=0" type="button" class="btn btn-danger"
+            style="margin-bottom: 20px;">Remove</button>
+          <button (click)="addForm('Experience')" type="button" class="btn btn-success">Add</button>
+
+          <!-- <button (click)="removeAddress(i)" type="button" class="btn btn-danger">Remove</button> -->
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </form>
+
+  <button type="submit" class="btn btn-primary" *ngIf="check!=0" (click)="prev()">Previous</button>
+
+  <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
+    style="margin-top: 20px;">Next</button>
+  <button type="submit" *ngIf="check==2" class="btn btn-primary" (click)="submit_btn()">Submit</button>
+</div>
+
+
+
+
+
+<!-- <button (click)="clicked()">Clicked</button> -->

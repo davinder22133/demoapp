@@ -4,10 +4,11 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { guardGuard } from '../guard.guard';
 const routes: Routes = [
 
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent,canActivate:[guardGuard] },
+  { path: 'register', component: RegisterComponent ,canActivate:[guardGuard]},
 
 ];
 

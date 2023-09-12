@@ -17,7 +17,8 @@ export class UtilsModule {
     loginUrl:'http://localhost:4500/Routes/v1/auth/login',
     createuserUrl:'http://localhost:4500/Routes/v1/auth/signup',
     leadFind:'http://localhost:4500/Routes/v1/adddetails/leadfind/',
-
+    addUserDetails:'http://localhost:4500/Routes/v1/adddetails/',
+    getParticularUser:'http://localhost:4500/Routes/v1/adddetails/get',
   }
 
   //  TimerFunction(fn:any,delay:any) {
