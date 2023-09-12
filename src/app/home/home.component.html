@@ -1,0 +1,33 @@
+
+
+<div class="login-register">
+
+<h2>Check User</h2>
+    
+    <form [formGroup]="form" >
+    
+    
+    <input type="email" value="" formControlName="email"  >
+    
+    <small
+    *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched"
+    class="invalid">Email required.</small>
+    
+    <small
+    *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched && !form.get('email')?.hasError('required')"
+    class="invalid">Email not valid.</small>
+    
+    
+    
+    <button (click)="Submit()" >Check Email</button>
+    
+    
+    
+    </form>
+    
+    
+    </div>
+    
+    
+    <h1 *ngIf="HttpResponse == null">Loading.....</h1>
+   

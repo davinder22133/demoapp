@@ -1,0 +1,64 @@
+/* Add styles to the form container */
+form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Style the h2 heading */
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+  }
+  
+  /* Style the input field */
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Style the error message */
+  .small.invalid {
+    color: #f00;
+    font-size: 14px;
+  }
+  
+  /* Style the button */
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Style the loading message */
+  h1 {
+    text-align: center;
+    color: #007bff;
+    font-size: 24px;
+    display: none;
+  }
+  
+  /* Add a background color to the body */
+  body {
+    background-color: #f0f0f0; /* You can change this to any color you like */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
