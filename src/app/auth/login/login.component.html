@@ -1,1 +1,44 @@
-<p>login works!</p>
+
+
+<div class="login-register">
+
+    <h2>Login Page</h2>
+    <div class="container">
+    
+    
+    
+      <form [formGroup]="form" class="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" placeholder="Enter your email">
+          <small
+          *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched"
+          class="invalid">Email required.</small>
+    
+          <small
+          *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched && !form.get('email')?.hasError('required')"
+          class="invalid">Email not valid.</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" formControlName="password" placeholder="Enter your password">
+          <small
+          *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched"
+          class="invalid">Password required.</small>
+    
+          <small
+          *ngIf="!form.get('password')?.hasError('required') && form.get('password')?.touched && form.get('password')?.hasError('pattern')"
+          class="invalid">Password Not Valid.</small>
+        </div>
+            <!-- <button (click)="Submit()" [disabled]="form.status=='INVALID'">Submit</button> -->
+    
+            <button (click)="Submit()">Submit</button>
+      </form>
+    
+    <!-- <p *ngIf="UserData==null">password mismatched</p> -->
+    
+    </div>
+    
+    
+    </div>

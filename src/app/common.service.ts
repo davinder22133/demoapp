@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 })
 export class CommonService {
   userObject: any = {};
-  RegisterLoginCheck:boolean=false;
-  constructor( private http: HttpClient) { }
+  RegisterLoginCheck: boolean = false;
+  constructor(private http: HttpClient) { }
 
 
- 
+
 
 
   getLocalStorage() {
@@ -22,18 +22,23 @@ export class CommonService {
   }
 
   addtoLocalStorage(key: any, value: any) {
-    if (!this.getLocalStorage()) { // when data present is not null
+
+
+    if (this.getLocalStorage()) { // when data present is not null
       let object = this.getLocalStorage();
+      object[key] = value;
       localStorage.setItem('userObject', JSON.stringify(object));
       return;
     }
+
+
     this.userObject[key] = value;
     localStorage.setItem('userObject', JSON.stringify(this.userObject));
   }
 
 
-  httpPostRequest(url:any,body:any){
-    return this.http.post(url,body);
+  httpPostRequest(url: any, body: any) {
+    return this.http.post(url, body);
   }
 
 }

@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { UtilsModule } from './utils/utils.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
@@ -13,12 +14,13 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
-
+  { path: 'dashboard', component: DashboardComponent },
 ];
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

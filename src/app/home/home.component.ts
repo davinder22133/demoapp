@@ -29,14 +29,17 @@ export class HomeComponent {
     const body={email:this.service.getLocalStorage().EmailEntered};
     
     
-    const url=this.utils.URLs.checkUserUrl;
-    let response=await this.service.httpPostRequest(url,body).toPromise();
+   
+    let response=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
     console.log("response si ",response); // response.data is not accessbile
     this.HttpResponse=response;
-  
-    if(this.HttpResponse.data==null){
-      const url=this.utils.URLs.createLead;
-      await this.service.httpPostRequest(url,body).toPromise()
+    
+    if(!this.HttpResponse.data){
+      
+     let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
+    
+    
+    
       this.router.navigate(['/register']);
     }
 
@@ -50,9 +53,12 @@ export class HomeComponent {
   Submit(){
     let email=this.form.get('email')?.value;
     this.service.RegisterLoginCheck=true;
+   
+    
   
    this.service.addtoLocalStorage("EmailEntered",email);
-    setTimeout(()=>{this.CheckUser()},1000);
+   setTimeout(()=>{this.CheckUser()},1000);
+  // this.utils.TimerFunction(this.CheckUser,2000)
   }
   
 
