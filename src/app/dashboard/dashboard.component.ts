@@ -49,9 +49,9 @@ export class DashboardComponent {
 
   constructor(private fb: FormBuilder, private http: HttpClient,private utils:UtilsModule, private router:Router,private service:CommonService) {
     this.UserDetails = this.fb.group({
-      Address:this.fb.array([this.Address]),
-      Education:this.fb.array([this.Education]),
-      Experience:this.fb.array([this.Experience])
+      Address:this.fb.array([_.cloneDeep(this.Address)]),
+      Education:this.fb.array([_.cloneDeep(this.Education)]),
+      Experience:this.fb.array([_.cloneDeep(this.Experience)])
     })
   
   }
@@ -83,7 +83,7 @@ export class DashboardComponent {
 
 async createuserDetails(){
  
-  const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+  
 
 
   const body={data:this.UserDetails.value,email:this.service.getLocalStorage().EmailEntered };
@@ -125,18 +125,19 @@ async createuserDetails(){
  async PatchData(){
    const body={email:this.service.getLocalStorage().EmailEntered};
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
-   console.log('responsei is ',this.HttpResponse);
-   if(this.HttpResponse.data.data){
+   console.log('responsei is ',this.HttpResponse.data.userDetials);
+   if(this.HttpResponse.data.userDetials){
   
-      Object.keys(this.HttpResponse.data.data.UserDetails).forEach((e)=>{
+      Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
       
-        for(let i=0;i<this.HttpResponse.data.data.UserDetails[e].length-1;i++){
+          if(Array.isArray(e)){
+        for(let i=0;i<this.HttpResponse.data.userDetials[e].length-1;i++){
          
             this.addForm(e);
           
           
         }
-  
+      }
   
         
         
@@ -144,7 +145,7 @@ async createuserDetails(){
   
   
       
-      this.UserDetails.patchValue(this.HttpResponse.data.UserDetails);
+      this.UserDetails.patchValue(this.HttpResponse.data.userDetials);
    }
   }
   
