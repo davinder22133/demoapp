@@ -3,7 +3,8 @@ import { CommonService } from './common.service';
 import { HttpParams } from '@angular/common/http';
 import { UtilsModule } from './utils/utils.module';
 import { FileStackService } from './file-stack.service';
-
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
+import { FacebookLoginProvider } from "@abacritt/angularx-social-login";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,7 +19,7 @@ export class AppComponent {
 
   return await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise()
   }
-  constructor(private service:CommonService,private utils:UtilsModule,private filestack:FileStackService){
+  constructor(private service:CommonService,private utils:UtilsModule,private filestack:FileStackService,private authService: SocialAuthService){
     // this.getData()
   }
  
@@ -31,5 +32,39 @@ export class AppComponent {
     })
   }
 
+  user!: SocialUser;
+  loggedIn: boolean=false;
+  ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      console.log('this is ',this.user);
+      
+    });
+  }
+
+  loginWithGoogle(){
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      console.log('this is ',this.user);
+      
+    });
+  }
+
+  logOut(){
+    this.authService.signOut();
+  }
+
+  signInWithFB(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((res)=>{
+      console.log('login success by facenbook');
+      
+    });;
+  }
+
+  signOut(): void {
+    this.authService.signOut();
+  }
 
 }

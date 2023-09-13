@@ -1,3 +1,12 @@
 <router-outlet></router-outlet>
 
 <input type="file" (change)="upload($event)"> 
+
+
+<button type="button" (click)="loginWithGoogle()" class="btn btn-danger">Login with Google</button>
+
+
+<button (click)="signInWithFB()">facebook</button>
+
+<button type="button" (click)="logOut()" class="btn btn-primary">Log Out</button>
+

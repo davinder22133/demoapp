@@ -9,6 +9,8 @@ import { UtilsModule } from './utils/utils.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { guardGuard } from './guard.guard';
 import { ShowDataComponent } from './show-data/show-data.component';
+import { SocialLoginModule,SocialAuthServiceConfig, FacebookLoginProvider} from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent ,canActivate:[guardGuard]},
@@ -32,9 +34,29 @@ const routes: Routes = [
     UtilsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('869689378054-tqlqcd7aetp1tamvdkle5n4f6pouun38.apps.googleusercontent.com'),
+          },
+
+
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('258732153789903')
+          }
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

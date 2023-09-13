@@ -88,10 +88,13 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 
 
   lengthCount(Element:any,key:any){
-   let keys=Object.keys( Element.userDetials[key][0])
+    console.log(Object.keys(Element.data[0].userDetials[key][0]), ' leu so ',key);
+      let length=Object.keys(Element.data[0].userDetials[key][0]).length-1;
+  //  let keys=Object.keys( Element.userDetials[key][0])
   //  console.log('Eelemt is ',Element.userDetials[key],'lengt h is ',keys.length);
    
-    return keys.length-1
+  return 5;
+    // return [keys.length-1]
   }
 
   constructor(private http:HttpClient,private router:Router,private service:CommonService,private utils:UtilsModule){
@@ -133,7 +136,8 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 //   headers:any=[];
   vast(el:any,length=''):any{
    
-   
+    console.log('el coming is ',el);
+    
     if(Array.isArray(el.value)){
       return el.value;
     }
