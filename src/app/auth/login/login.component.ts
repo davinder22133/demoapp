@@ -41,6 +41,28 @@ async loginUser(){
   return;
 }
 
+async loginwithGoogle(){
+  const body={email:'abc233@gmail.com'}
+this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
+  console.log('userpresent or not ',this.HttpResponse);
+  if(this.HttpResponse.data==null){
+   const  body={
+      name:'acdn',
+      email:'abc233@gmail.com',
+     
+      userType:'Social'}
+    let createUser= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise()
+    console.log('createdUSr is ',createUser);
+    return;
+  }
+
+else{
+  
+}
+
+
+}
+
 async Submit(){
  
  this.loginUser();

@@ -8,6 +8,9 @@ export const guardGuard: CanActivateFn = (route, state) => {
   const service=inject(CommonService)
   const router=inject(Router);
   let previousUrl;
+
+
+  
   // log
   if(!service.getLocalStorage()){
 
@@ -16,6 +19,13 @@ export const guardGuard: CanActivateFn = (route, state) => {
     router.navigate(['/home']);
     return true;
   }
+
+
+  if(currentRoutes=='showDetials'){
+    service.addtoLocalStorage('previousUrl','showDetials')
+    return true;
+  }
+
   else{
     previousUrl=service.getLocalStorage().previousUrl;
   }
@@ -27,6 +37,8 @@ export const guardGuard: CanActivateFn = (route, state) => {
   console.log('current route is ',currentRoutes);
   
   if(currentRoutes=='login' && previousUrl=='showDetials' ){
+    
+    // localStorage.removeItem('userObject');
     return true;
   }
 

@@ -40,7 +40,11 @@ export class RegisterComponent {
       return;
     }  
      body={
-      name:this.form.get('name')?.value,email:this.form.get('email')?.value,Password:this.form.get('password')?.value,confirmPassword:this.form.get('confirmPassword')?.value}
+      name:this.form.get('name')?.value,
+      email:this.form.get('email')?.value,
+      Password:this.form.get('password')?.value,
+      confirmPassword:this.form.get('confirmPassword')?.value,
+      userType:'Direct'}
       
 
       // CREATE USER

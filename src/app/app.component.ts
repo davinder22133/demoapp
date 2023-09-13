@@ -35,6 +35,8 @@ export class AppComponent {
   user!: SocialUser;
   loggedIn: boolean=false;
   ngOnInit() {
+    console.log('this is ngOnit called');
+    
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);

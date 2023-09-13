@@ -1,108 +1,17 @@
 
-<!-- <table>
-    <thead>
-      <tr>
-       
-        <th *ngFor="let item of data[0] | keyvalue">{{ item.key }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of data" >
-        <ng-container *ngFor="let category of row | keyvalue">
-        <td>
-          <div *ngFor="let cell of vast(category)" [attr.rowspan]="maxRowSpan(row)">
-           <div *ngFor="let a of cell|keyvalue">
-            {{a.key}} 
-           </div>
-            
-  
-          </div></td>
-        </ng-container>
-      </tr>
-  
-      
-    </tbody>
-  </table>
-   -->
-  
-  
-  
-  
-<!-- ORIGINAL DATA -->
-  <!-- <table *ngIf="apiData">
-    <thead>
-      <tr>
-       
-        <th *ngFor="let item of headers">{{ item  }}</th>
-      </tr>
-    </thead>
-  
-      <tbody>
-        <tr *ngFor="let row of apiData.data" >
-  
-          <td >{{row._id}}</td>
-          
-         
-          
-          <ng-container *ngFor="let category of row.userDetials | keyvalue">
-            <td>
-            <ng-container *ngFor="let cell of vast(category)" class="border">
-              <p class="border">{{ cell|json}} </p>
-              
-            </ng-container>
-          </td>
-  
-         
-          </ng-container>
-          <td>
-          <button (click)="edit()">Edit</button>
-            
-          <button (click)="delete(row._id)">Delete</button>
-        </td>
-        
-        </tr>
-    
-       
-      </tbody>
-  
-   
-  </table>
- -->
-
-
-
-  <!-- <div *ngIf="!apiData">
-   
-    <p>Loading data...</p>
-  </div> -->
-  
-  
-  
-  <!-- <select [(ngModel)]="selectedOption" (change)="updateBtn()">
-    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-  </select>
-  
-  <p>You selected: {{ selectedOption }}</p>
-  
-  <button (click)="previousPage()" [disabled]="selectedOption=== 1">Previous</button>
-  <span *ngFor="let page of newArray">
-    <button (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
-  </span>
-  <button (click)="nextPage()" [disabled]="selectedOption === newArray">Next</button>
-  <button (click)="show()">Show</button> -->
-
-
 <input type="text" [(ngModel)]="search_text">
 <button (click)="search_data()">Search Bar</button>
-  <table *ngIf="apiData">
+  <table *ngIf="apiData!=null">
     <thead>
 
 
       <tr>
         <th colspan="2">Basic Info</th>
-        <th *ngFor="let item of headers">
-          {{ item  }}
+        <!-- <ng-container *ngIf="apiData"> -->
+        <th *ngFor="let item of headers; let i = index" [attr.colspan]="lengthCount(i)">
+         <ng-container class="border"> {{ item  }}</ng-container>
         </th>
+        <!-- </ng-container> -->
       </tr>
     </thead>
 
@@ -110,38 +19,81 @@
   <tr>
     <td>Name</td>
     <td>Email</td>
-    <!-- <ng-container *ngFor="let item of headers" > 
-    <td *ngFor="let data of filterSub(apiData.data[0],item)">
-      {{data}}
-    </td> 
 
-    
-  </ng-container> -->
+  
+      <!-- <ng-container *ngIf="apiData.data[0].userDetials"> -->
+     <!-- <ng-container *ngIf="apiData.data[0].userDetials.Address"> -->
+     <td *ngFor="let i of OBjectKeysToArray(subheaders[0])">
+         <p class="border">{{i}} </p> 
+      </td>
+
+    <!-- </ng-container> -->
+
+
+    <!-- <ng-container *ngIf="apiData.data[0].userDetials.Education"> -->
+      <td *ngFor="let i of OBjectKeysToArray(subheaders[1])">
+        <p class="border">{{i}} </p> 
+       </td>
+ 
+     <!-- </ng-container> -->
+
+
+     
+    <!-- <ng-container *ngIf="apiData.data[0].userDetials.Experience"> -->
+      <td *ngFor="let i of OBjectKeysToArray(subheaders[2])">
+        <p class="border">{{i}} </p> 
+       </td>
+ 
+     <!-- </ng-container> -->
+    <!-- </ng-container> -->
+
+   
+
 
     
   </tr>
 
-  <tr *ngFor="let row of apiData.data" >
+ <tr *ngFor="let row of apiData.data" >
   
     <td >{{row.name}}</td>
     <td >{{row.email}}</td>
-   
-    <!-- <button (click)="delete(row)">Delete</button> -->
-    <ng-container *ngFor="let category of row.userDetials | keyvalue">
 
-      <!-- {{category }} -->
-      <td>
-      <ng-container *ngFor="let cell of vast(category)" class="border">
-        <p class="border">  {{cell|json}}</p> 
-       
-      
-      </ng-container>
-    </td>
-    
-   
-    </ng-container>
-    <button (click)="delete(row)">Delete</button>
+    <ng-container *ngIf="row.userDetials">
+    <!-- <ng-container *ngIf="row.userDetials.Address"> -->
+
+      <!-- {{row.userDetials.Address | json}} -->
+
+      <ng-container *ngFor="let address of row.userDetials.Address">
+      <td *ngFor="let i of ObjecKeysValues(address)">
+        {{ i  }}
+       </td>
+       </ng-container>
+     <!-- </ng-container> -->
+
+
+     <ng-container *ngFor="let education of row.userDetials.Education">
+      <td *ngFor="let i of ObjecKeysValues(education)">
+        {{CheckYearArray(i)}} 
+       </td>
+       </ng-container>
+
+
+     
+       <ng-container *ngFor="let exp of row.userDetials.Experience">
+        <td *ngFor="let i of ObjecKeysValues(exp)">
+          {{CheckYearArray(i)}} 
+         </td>
+         </ng-container>
+
+     </ng-container>
+     <td>
+     <button (click)="delete(row)">Delete</button>
     <button (click)="update(row)">update</button>
+  </td>
+</tr>
+
+
+
 </tbody>
 
   </table>

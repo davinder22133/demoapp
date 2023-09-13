@@ -13,106 +13,76 @@ export class ShowDataComponent {
   // data:any='';
   headers:any=[];
   count:any
-  // constructor( private http: HttpClient) {
-  //   const body={email:'abc@gmail.com'}
-  //   this.http.post('http://localhost:4500/Routes/v1/adddetails/get', body).subscribe((data) => {
-  //     console.log("data is ", data);
-  //     this.data=data;
-  //     this.data=this.data.data;
-  //   // console.log(this.data.user);
-  //   console.log(this.data.userDetials," dat acoming is ");
-  //     // this.data.use
-  //     let keys=Object.keys(this.data.userDetials)
-  //     console.log("key is ",keys);
-  //     this.headers=keys.splice(1,keys.length-2);
-  //     console.log("lek ",keys, " data is ",this.data);
-      
-
-   
-  // });
-  // }
-
-
-
-  // helper(el:any){
-  //   if(this.data=='') return;
-    
-  //   let x=this.data.userDetials[el];
-  //   console.log("x is ",x);
-    
-  //   return this.data.userDetials[el];
-  // }
+subheaders:any=[]
 
 
 
   async GetAgain(){
     const params = new HttpParams()
-    .set('startIndex', this.startIndex)  // Use strings as values for parameters
+    .set('startIndex', this.startIndex)  
     .set('endIndex', this.endIndex); 
      
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
+    console.log('api data is ',this.apiData);
     
   }
 
   async getData(){
     const params = new HttpParams()
-    .set('startIndex', this.startIndex)  // Use strings as values for parameters
-    .set('endIndex', this.endIndex);  // Use strings as values for parameters
+    .set('startIndex', this.startIndex)  
+    .set('endIndex', this.endIndex);  
 
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
   this.headers.push('Basic Info ');
   console.log('apidata ois ',this.apiData);
   
-  let keys=Object.keys(this.apiData.data[0].userDetials)
-  keys=keys.slice(1,keys.length-1)
-  console.log(keys ,' xi s');
-  this.headers=keys;
+    // for(this.apiData)
+    for(let i=0;i<this.apiData.data.length;i++){
+      if(this.apiData.data[i].userDetials){
+        // console.log('ehloo ');
+        
+        let keys=Object.keys(this.apiData.data[i].userDetials)
+        keys=keys.slice(1,keys.length-1)
+        this.headers=keys;
+        this.subheaders.push(this.apiData.data[i].userDetials.Address[0]);
+        this.subheaders.push(this.apiData.data[i].userDetials.Education[0]);
+        this.subheaders.push(this.apiData.data[i].userDetials.Experience[0]);
+        break;
+      }
+    }
+
+
+
+  
+
+  console.log(this.headers ,' xi s', this.subheaders,' subheaders');
+
     this.count=this.apiData.count;
- let x= this.ArrayFiller();
-    console.log('x is ',this.newArray);
+ this.ArrayFiller();
+   
     
  return;
   }
 
 
-  filterSub(Element:any,key:any){
-    // console.log('funcioton called ',Element);
-    let keys:any=[]
-    keys=Object.keys( Element.userDetials[key][0])
-   keys.pop()
-  //  console.log('keys is ',keys);
-   return keys
+
+
+  lengthCount(i:any){
    
-  }
-
-
-
-  lengthCount(Element:any,key:any){
-    console.log(Object.keys(Element.data[0].userDetials[key][0]), ' leu so ',key);
-      let length=Object.keys(Element.data[0].userDetials[key][0]).length-1;
-  //  let keys=Object.keys( Element.userDetials[key][0])
-  //  console.log('Eelemt is ',Element.userDetials[key],'lengt h is ',keys.length);
+    
+  return Object.keys(this.subheaders[i]).length;
    
-  return 5;
-    // return [keys.length-1]
   }
 
   constructor(private http:HttpClient,private router:Router,private service:CommonService,private utils:UtilsModule){
-    console.log("i am called");
- 
-  
-    
-    
    
+}
 
-    
-  }
-
-  async ngOnInit() { // Assuming this code is in an Angular component
-    // console.log("i am called");
-    this.getData(); 
+  async ngOnInit() {
+   
+   await this.getData(); 
     this.ArrayFiller();
-    // console.log("i am  last called ",this.apiData);
+    
   
   }
   
@@ -121,31 +91,45 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 
 
 
-//   // console.log("el is ",el);
-  
-//   let maxlength=el.Education.length;
-//   if(maxlength<el.experience.length) maxlength=el.experience.length;
-//   if(maxlength<el.user.length) maxlength=el.user.length;
-//   return maxlength
-  
-// }
-  // length(el:any,length:any):number{
-  //   return el.value.length;
-  // }
 
-//   headers:any=[];
-  vast(el:any,length=''):any{
-   
-    console.log('el coming is ',el);
-    
-    if(Array.isArray(el.value)){
-      return el.value;
-    }
-    return [];
+  
+
+
+OBjectKeysToArray(el:any){
+ 
+  let array=Object.keys(el)
+  array.pop()
+
+ 
+  
+  return array;
+}
+
+ObjecKeysValues(el:any){
+
+  
+  let array=Object.keys(el)
+  array.pop()
+  
+  let valuesArray:any=[];
+  array.map((e)=>{
+  valuesArray.push(el[e]);
+  })
+  return valuesArray;
+}
+
+
+CheckYearArray(el:any){
+ 
+  
+
+  if(typeof(el)=='object'){
+   const result = el.From.split('-')[0] + '-' + el.To.split('-')[0];
+   return result
   }
-  
 
-
+  return el;
+}
 
 
 async delete(row:any){
@@ -158,20 +142,32 @@ let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPr
 
 
 update(row:any){
-  console.log('row is ',row);
+  // console.log('row is ',row);
   
-  this.service.addtoLocalStorage("EmailEntered",row.email);
- 
-  this.router.navigate(['/dashboard']);
+
+
+ localStorage.removeItem('userObject');
+ this.service.addtoLocalStorage("EmailEntered",row.email);
+  this.service.addtoLocalStorage('previousUrl' ,'showDetials')
+  this.router.navigate(['/login']);
 }
 
 
 search_text:any='';
 async search_data(){
+
+  const params = new HttpParams()
+.set('startIndex', this.startIndex)  
+.set('endIndex', this.endIndex); 
 console.log('searchtext is ',this.search_text);
 const body={name:this.search_text};
-this.apiData.data=await this.service.httpPostRequest(this.utils.URLs.searchUser,body).toPromise();
+this.apiData.data=await this.service.httpPostRequest(this.utils.URLs.searchUser,body,params).toPromise();
 console.log('api data is ',this.apiData);
+
+
+
+ 
+// this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
 
 }
 
