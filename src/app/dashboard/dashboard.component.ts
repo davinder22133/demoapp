@@ -54,6 +54,8 @@ export class DashboardComponent {
       Experience:this.fb.array([_.cloneDeep(this.Experience)])
     })
   
+    this.PatchData();
+
   }
 
 
@@ -129,12 +131,16 @@ async createuserDetails(){
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
    console.log('responsei is ',this.HttpResponse.data.userDetials);
    if(this.HttpResponse.data.userDetials){
-  
+    console.log('insdie repsonsei ',Object.keys(this.HttpResponse.data.userDetials));
+    
       Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
-      
-          if(Array.isArray(e)){
+        console.log('e is ',e);
+          if(Array.isArray(this.HttpResponse.data.userDetials[e])){
+           
+            
         for(let i=0;i<this.HttpResponse.data.userDetials[e].length-1;i++){
-         
+          console.log('insdie add form');
+          
             this.addForm(e);
           
           

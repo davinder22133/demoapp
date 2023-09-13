@@ -12,7 +12,7 @@ import { ShowDataComponent } from './show-data/show-data.component';
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent ,canActivate:[guardGuard]},
-  { path: 'showDetials', component: ShowDataComponent},
+  { path: 'showDetials', component: ShowDataComponent,canActivate:[guardGuard]},
   {
     path: '',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)

@@ -20,7 +20,16 @@ export const guardGuard: CanActivateFn = (route, state) => {
     previousUrl=service.getLocalStorage().previousUrl;
   }
  
+  if(currentRoutes=='showDetials'){
+    return true;
+  }  
+
+  console.log('current route is ',currentRoutes);
   
+  if(currentRoutes=='login' && previousUrl=='showDetials' ){
+    return true;
+  }
+
 
  
 
@@ -28,7 +37,8 @@ export const guardGuard: CanActivateFn = (route, state) => {
     home:['dashboard','login','register'],
     login:['dashboard','register'],
     register:['dashboard','login'],
-    dashboard:['home','login','register']
+    dashboard:['home','login','register'],
+    showDetials:['home','register']
   }
 
 

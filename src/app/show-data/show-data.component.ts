@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { CommonService } from '../common.service';
 import { UtilsModule } from '../utils/utils.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-show-data',
@@ -11,6 +12,7 @@ import { UtilsModule } from '../utils/utils.module';
 export class ShowDataComponent {
   // data:any='';
   headers:any=[];
+  count:any
   // constructor( private http: HttpClient) {
   //   const body={email:'abc@gmail.com'}
   //   this.http.post('http://localhost:4500/Routes/v1/adddetails/get', body).subscribe((data) => {
@@ -42,10 +44,20 @@ export class ShowDataComponent {
   // }
 
 
+
+  async GetAgain(){
+    const params = new HttpParams()
+    .set('startIndex', this.startIndex)  // Use strings as values for parameters
+    .set('endIndex', this.endIndex); 
+     
+this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
+    
+  }
+
   async getData(){
     const params = new HttpParams()
-    .set('startIndex', '0')  // Use strings as values for parameters
-    .set('endIndex', '10');  // Use strings as values for parameters
+    .set('startIndex', this.startIndex)  // Use strings as values for parameters
+    .set('endIndex', this.endIndex);  // Use strings as values for parameters
 
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
   this.headers.push('Basic Info ');
@@ -55,7 +67,11 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
   keys=keys.slice(1,keys.length-1)
   console.log(keys ,' xi s');
   this.headers=keys;
- return
+    this.count=this.apiData.count;
+ let x= this.ArrayFiller();
+    console.log('x is ',this.newArray);
+    
+ return;
   }
 
 
@@ -78,7 +94,7 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
     return keys.length-1
   }
 
-  constructor(private http:HttpClient,private service:CommonService,private utils:UtilsModule){
+  constructor(private http:HttpClient,private router:Router,private service:CommonService,private utils:UtilsModule){
     console.log("i am called");
  
   
@@ -92,7 +108,7 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
   async ngOnInit() { // Assuming this code is in an Angular component
     // console.log("i am called");
     this.getData(); 
-  
+    this.ArrayFiller();
     // console.log("i am  last called ",this.apiData);
   
   }
@@ -100,7 +116,7 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
  
   apiData: any = null;
 
-// maxRowSpan(el:any):number{
+
 
 //   // console.log("el is ",el);
   
@@ -117,7 +133,7 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 //   headers:any=[];
   vast(el:any,length=''):any{
    
-    // console.log("el is ",el);
+   
     if(Array.isArray(el.value)){
       return el.value;
     }
@@ -125,158 +141,107 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
   }
   
 
-  Value(object:any,key:any){
-    // console.log('object is ',object,' key is ',key,' value is ',object[key]);
-    
-    return object[key];
-  }
-    
-//     return this.data[el];
-//   }
-//   currentPage = 1;
-//   // startIndex:any=0;
-//   startIndex :any= (this.currentPage - 1) * this.selectedOption;
-//   endIndex = this?.startIndex + this.selectedOption;
-//   TotalCount:any=0;
-//   updateBtn(){
-//     // console.log("Data count is ",this.apiData.count);
-//     this.newArray=[];
-// for (let i = 1; i <=(this.TotalCount/this.selectedOption); i++) {
-//   this.newArray.push(i);
-// }
 
 
-// console.log("this new array is ",this.newArray);
 
-
-//   }
-
-//   newArray:any=null;
-// // endIndex:any=this.selectedOption;
-//   ngOnInit() {
-//     // Fetch data from your API and assign it to apiData when it's available
-//     // let data = { startIndex: this.startIndex, endIndex:this.endIndex  };
-//     console.log("this startindex is ",this.startIndex, " end index is ",this.endIndex);
-    
-//     let params = new HttpParams();
-//     params = params.set('startIndex', this.startIndex);
-//     params = params.set('endIndex', this.endIndex);
-
-//     console.log("param is ",params);
-    
-   
-//     const obv = this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{params})
-    
-//     obv.subscribe((data:any) => {
-//       this.apiData = data;
-//       console.log("apiiii data is ",this.apiData);
-//       // const newArray = [];
-//       console.log("Data count is ",this.apiData.count);
-//       this.TotalCount=this.apiData.count;
-//       this.newArray=[];
-//   for (let i = 1; i <=(this.apiData.count/this.selectedOption); i++) {
-//     this.newArray.push(i);
-//   }
-
-//   console.log("nedwArray is ",this.newArray);
-  
-//   // return newArray;
-//       this.headers=Object.keys(this.apiData.data[0].userDetials);
-   
-//        this.headers.pop();
-//        this.filterData();
-//     });
-//   }
-//   orginalData:any=[];
-
-
-//   // itemsPerPage = 10;
-
-
-//   updatePagedIndex() {
-//     this.startIndex = (this.currentPage - 1) * this.selectedOption;
-//     this. endIndex = this.startIndex + this.selectedOption;
-//     this.show();
-//     // this.newArray = this.data.slice(startIndex, endIndex);
-//   }
-
-//   async show(){
-//     // const params = new HttpParams().set('startIndex', this.startIndex).set('endIndex', this.endIndex);
-//     let param=new HttpParams();
-//     param=param.append("startIndex",0);
-//   await this.http.post('http://localhost:4500/Routes/v1/adddetails/getall',{param}).toPromise().then((El)=>{
-//     // console.log("el count is ",El);
-    
-//     return El;
-//   })
-   
-//   }
- 
-
-//   previousPage(){
-//     if (this.currentPage > 1) {
-//       this.currentPage--;
-//       this.updatePagedIndex();
-//     }
-//   }
-
-//   goToPage(pageNumber:any){
-//     if (pageNumber >= 1 && pageNumber <= this.newArray/this.selectedOption) {
-//       this.currentPage = pageNumber;
-//       this.updatePagedIndex();
-//     }
-//   }
-
-
-//   nextPage(){
-//     if (this.currentPage < this.newArray.length) {
-//       this.currentPage++;
-//       this.updatePagedIndex();
-//       this.show();
-//     }
-//   }
-  
-//   filterData(){
-
-//     let data:any=[];
-//       this.apiData.data.map((el:any)=>{
-//         console.log("el is ",el);
-//         // data.id=[].el._id;
-//         let arr:any={};
-//         arr._id=el._id;
-//         data.push(arr);
-//         // console.log(el.userDetials.);
-//         console.log("flaterd is ",el.userDetials.Address.flat());
-        
-        
-
-//       })
-
-//       console.log("data is ",data);
-      
-
-//   }
-
-
-//   delete(id:any){
-//     const body={_id:id};
-//   this.http.post('http://localhost:4500/Routes/v1/adddetails/delete',body).subscribe((el)=>{
-//     console.log("data is ",el);
-    
-//   })
-//   }
-
-
-//   edit(){
-    
-//   }
-
-
-delete(row:any){
+async delete(row:any){
 console.log('de;ete row is ',row._id);
-const body={_id:row._id}
-this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body);
+const body={_id:'64faad447a8d2f4f1e97264e'}
+let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPromise();
+  console.log('x sio ',x);
+  
+}
+
+
+update(row:any){
+  console.log('row is ',row);
+  
+  this.service.addtoLocalStorage("EmailEntered",row.email);
+ 
+  this.router.navigate(['/dashboard']);
+}
+
+
+search_text:any='';
+async search_data(){
+console.log('searchtext is ',this.search_text);
+const body={name:this.search_text};
+this.apiData.data=await this.service.httpPostRequest(this.utils.URLs.searchUser,body).toPromise();
+console.log('api data is ',this.apiData);
 
 }
+
+
+currentPage = 1;
+selectedOption:any=2;
+options:any=[2,4,6];
+newArray:any=null;
+
+updateBtn(){
+  this.ArrayFiller();
+  this.currentPage=1;
+  this.updatePagedIndex();
+  this.startIndex=0;
+  this.getData()
+}
+  
+  startIndex:any=0;
+  endIndex:any=this.selectedOption;
+
+
+  previousPage(){
+    if (this.currentPage > 1) {
+            this.currentPage--;
+            this.updatePagedIndex();
+           
+          this.GetAgain();
+  
+          }
+  }
+
+
+   totalPages() {
+    return Number(this.count  / this.selectedOption);
+  }
+
+   ArrayFiller() {
+  
+    
+    this.newArray=[];
+    for(let i=1;i<=this.totalPages();i++){
+      this.newArray.push(i);
+    }
+  }
+
+    updatePagedIndex() {
+
+
+    this.startIndex = Number(this.currentPage - 1) * Number(this.selectedOption);
+    this. endIndex = Number(this.startIndex) + Number(this.selectedOption);
+   
+   
+  }
+
+
+    nextPage(){
+    if (this.currentPage < this.newArray.length) {
+      this.currentPage++;
+      this.updatePagedIndex();
+      this.GetAgain();
+    }
+  }
+
+
+
+
+  goToPage(pageNumber:any){
+    
+    
+    if (pageNumber >= 1 && pageNumber <= this.newArray.length) {
+      this.currentPage = pageNumber;
+      this.updatePagedIndex();
+      this.GetAgain();
+  
+    }}
 
 }

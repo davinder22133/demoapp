@@ -20,7 +20,8 @@ export class UtilsModule {
     addUserDetails:'http://localhost:4500/Routes/v1/adddetails/',
     getParticularUser:'http://localhost:4500/Routes/v1/adddetails/get',
     getLimitedUsers:'http://localhost:4500/Routes/v1/users/getlimited',
-    DeleteUser:'http://localhost:4500/Routes/v1/users/delete'
+    DeleteUser:'http://localhost:4500/Routes/v1/users/delete',
+    searchUser:'http://localhost:4500/Routes/v1/users/search'
   }
 
   //  TimerFunction(fn:any,delay:any) {

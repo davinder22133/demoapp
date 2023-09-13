@@ -92,14 +92,15 @@
   <button (click)="show()">Show</button> -->
 
 
-
+<input type="text" [(ngModel)]="search_text">
+<button (click)="search_data()">Search Bar</button>
   <table *ngIf="apiData">
     <thead>
 
 
       <tr>
         <th colspan="2">Basic Info</th>
-        <th *ngFor="let item of headers" [attr.colspan]="lengthCount(apiData.data[0],item)">
+        <th *ngFor="let item of headers">
           {{ item  }}
         </th>
       </tr>
@@ -109,13 +110,13 @@
   <tr>
     <td>Name</td>
     <td>Email</td>
-    <ng-container *ngFor="let item of headers"> 
+    <!-- <ng-container *ngFor="let item of headers"> 
     <td *ngFor="let data of filterSub(apiData.data[0],item)">
       {{data}}
-    </td>
+    </td> 
 
     
-  </ng-container>
+  </ng-container> -->
   </tr>
 
   <tr *ngFor="let row of apiData.data" >
@@ -123,25 +124,42 @@
     <td >{{row.name}}</td>
     <td >{{row.email}}</td>
    
-    <button (click)="delete(row)">Delete</button>
+    <!-- <button (click)="delete(row)">Delete</button> -->
     <ng-container *ngFor="let category of row.userDetials | keyvalue">
 
-      {{category }}
+      <!-- {{category }} -->
       <td>
       <ng-container *ngFor="let cell of vast(category)" class="border">
-        
-        <p class="border">{{ Value(category,cell)}} </p>
+        <p class="border">  {{cell|json}}</p> 
+       
       
       </ng-container>
     </td>
-      {{category|json }}
-      <!-- <ng-container *ngFor="let cell of category.value">
-        {{cell}}
-      </ng-container> -->
-
+    
    
     </ng-container>
-
+    <button (click)="delete(row)">Delete</button>
+    <button (click)="update(row)">update</button>
 </tbody>
 
   </table>
+
+
+  <select [(ngModel)]="selectedOption" (change)="updateBtn()">
+    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+  </select>
+  
+  <p>You selected: {{ selectedOption }}</p>
+  
+  <button (click)="previousPage()" [disabled]="selectedOption=== 1">Previous</button>
+  <ng-container *ngIf="newArray!=null">
+  <span *ngFor="let page of newArray">
+    
+    <button (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+  </span>
+  </ng-container>
+ 
+  <button (click)="nextPage()" [disabled]="selectedOption === newArray">Next</button>
+  
+
+
