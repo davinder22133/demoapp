@@ -1,15 +1,17 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { CommonService } from './common.service';
+import { UtilsModule } from './utils/utils.module';
 
-export const guardGuard: CanActivateFn = (route, state) => {
+export const guardGuard: CanActivateFn = async (route, state) => {
   const currentRoutes=state.url.split('/')[1]; // as url is /home so we changed to home
 
   const service=inject(CommonService)
   const router=inject(Router);
+  const utils=inject(UtilsModule)
   let previousUrl;
 
-
+  console.log('current route is ',currentRoutes)
   
   // log
   if(!service.getLocalStorage()){
@@ -19,25 +21,42 @@ export const guardGuard: CanActivateFn = (route, state) => {
     router.navigate(['/home']);
     return true;
   }
-
-
-  if(currentRoutes=='showDetials'){
-    service.addtoLocalStorage('previousUrl','showDetials')
-    return true;
-  }
-
   else{
     previousUrl=service.getLocalStorage().previousUrl;
   }
- 
+  
+  
   if(currentRoutes=='showDetials'){
-    return true;
-  }  
+    console.log('inside  show details');
+    
+    // service.addtoLocalStorage('previousUrl','showDetials')
+
+   let email= service.getLocalStorage().EmailEntered
+  //  console.log('email comig is ',email); 
+   
+   if(email==undefined) return false;
+    let ab: any = await service.httpPostRequest(utils.URLs.checkUserUrl,{email:email}).toPromise()
+   console.log('ab si ',ab);
+   
+    
+    if(ab && ab.data.userAccess=='admin'){
+      return true;
+     
+    }
+    service.addtoLocalStorage('previousUrl',currentRoutes);
+    localStorage.removeItem('userObject');
+    router.navigate(['/home'])
+    return false;
+   
+  }
+
+
+ 
 
   console.log('current route is ',currentRoutes);
   
   if(currentRoutes=='login' && previousUrl=='showDetials' ){
-    
+    service.addtoLocalStorage('previousUrl' ,'login')
     // localStorage.removeItem('userObject');
     return true;
   }
@@ -74,6 +93,8 @@ export const guardGuard: CanActivateFn = (route, state) => {
   // if user is on home and he entered email and than click button either go to register or login 
   if(service.RegisterLoginCheck &&((currentRoutes=='login') || (currentRoutes=='register')) && ((previousUrl=='home') )){
     service.RegisterLoginCheck=false;
+    console.log('inside check ');
+    
     // localStorage.setItem('previousUrl',currentRoutes);
     service.addtoLocalStorage('previousUrl',currentRoutes);
     return true;
@@ -95,6 +116,7 @@ export const guardGuard: CanActivateFn = (route, state) => {
 
   //  if previous url is home and user try to go dashboard
   if(restrictedRoutes[previousUrl].includes(currentRoutes) ){
+
     console.log("inside back condition ",previousUrl);
     
 router.navigate(['/'+previousUrl]);

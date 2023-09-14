@@ -38,6 +38,7 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
   
     // for(this.apiData)
     for(let i=0;i<this.apiData.data.length;i++){
+
       if(this.apiData.data[i].userDetials){
         // console.log('ehloo ');
         
@@ -68,9 +69,11 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 
 
   lengthCount(i:any){
-   
+  //  if(thi)
+   if( this.subheaders[i]==undefined) return 1;
+    console.log('array ',this.subheaders[i],'length is ',Object.keys(this.subheaders[i]).length);
     
-  return Object.keys(this.subheaders[i]).length;
+  return Object.keys(this.subheaders[i]).length-1;
    
   }
 
@@ -96,11 +99,13 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 
 
 OBjectKeysToArray(el:any){
- 
+  
+  if(el==undefined) return [];
+
   let array=Object.keys(el)
   array.pop()
 
- 
+  // console.log('el copme s ',el, 'array is ',array);
   
   return array;
 }
@@ -133,7 +138,7 @@ CheckYearArray(el:any){
 
 
 async delete(row:any){
-console.log('de;ete row is ',row._id);
+// console.log('de;ete row is ',row._id);
 const body={_id:'64faad447a8d2f4f1e97264e'}
 let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPromise();
   console.log('x sio ',x);
@@ -142,14 +147,11 @@ let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPr
 
 
 update(row:any){
-  // console.log('row is ',row);
-  
-
-
- localStorage.removeItem('userObject');
- this.service.addtoLocalStorage("EmailEntered",row.email);
+ 
+//  this.service.addtoLocalStorage("EmailEntered",row.email);
+ this.router.navigate(['/dashboard',row._id])  
   this.service.addtoLocalStorage('previousUrl' ,'showDetials')
-  this.router.navigate(['/login']);
+  // this.router.navigate(['/login']);
 }
 
 

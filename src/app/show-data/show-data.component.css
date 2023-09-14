@@ -9,6 +9,16 @@ table, th, td {
   }
 
 
+  .d-flex{
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .d-flex-row{
+    display: flex;
+  }
+
   .active{
     background-color: black;
     color:white;

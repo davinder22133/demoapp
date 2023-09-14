@@ -23,10 +23,14 @@ export class CommonService {
 
   addtoLocalStorage(key: any, value: any) {
 
-
+    console.log('keu cmgin s ',key);
+    
     if (this.getLocalStorage()) { // when data present is not null
       let object = this.getLocalStorage();
+     
+      
       object[key] = value;
+      console.log('inside if ',object);
       localStorage.setItem('userObject', JSON.stringify(object));
       return;
     }
@@ -62,5 +66,7 @@ export class CommonService {
     return this.http.delete(url,body);
   }
 
+
+ 
 
 }

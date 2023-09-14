@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { guardGuard } from '../guard.guard';
+
 const routes: Routes = [
 
   { path: 'login', component: LoginComponent,canActivate:[guardGuard] },
@@ -16,9 +17,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+
   ],
   imports: [
+    // GoogleSigninButtonModule,
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)

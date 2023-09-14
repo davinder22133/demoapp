@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UtilsModule } from './utils/utils.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { guardGuard } from './guard.guard';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { SocialLoginModule,SocialAuthServiceConfig, FacebookLoginProvider} from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
@@ -19,6 +20,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
+  { path: 'dashboard/:_id', component: DashboardComponent ,canActivate:[guardGuard]},
   { path: 'dashboard', component: DashboardComponent ,canActivate:[guardGuard]},
 ];
 @NgModule({
@@ -30,6 +32,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    GoogleSigninButtonModule,
     FormsModule,
     UtilsModule,
     HttpClientModule,
@@ -51,7 +54,7 @@ const routes: Routes = [
 
           {
             id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('258732153789903')
+            provider: new FacebookLoginProvider('983459126246537')
           }
         ],
       } as SocialAuthServiceConfig,

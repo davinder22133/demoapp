@@ -24,7 +24,7 @@
       <!-- <ng-container *ngIf="apiData.data[0].userDetials"> -->
      <!-- <ng-container *ngIf="apiData.data[0].userDetials.Address"> -->
      <td *ngFor="let i of OBjectKeysToArray(subheaders[0])">
-         <p class="border">{{i}} </p> 
+         <p class="border">{{i}}   </p> 
       </td>
 
     <!-- </ng-container> -->
@@ -71,13 +71,16 @@
      <!-- </ng-container> -->
 
 
-     <ng-container *ngFor="let education of row.userDetials.Education">
-      <td *ngFor="let i of ObjecKeysValues(education)">
+    
+     <tr *ngFor="let education of row.userDetials.Education">
+      
+      <td *ngFor="let i of ObjecKeysValues(education)" >
         {{CheckYearArray(i)}} 
        </td>
-       </ng-container>
 
+      </tr>
 
+   
      
        <ng-container *ngFor="let exp of row.userDetials.Experience">
         <td *ngFor="let i of ObjecKeysValues(exp)">

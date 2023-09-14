@@ -18,7 +18,7 @@ export class UtilsModule {
     createuserUrl:'http://localhost:4500/Routes/v1/auth/signup',
     leadFind:'http://localhost:4500/Routes/v1/lead/LeadFind/',
     addUserDetails:'http://localhost:4500/Routes/v1/adddetails/',
-    getParticularUser:'http://localhost:4500/Routes/v1/adddetails/get',
+    getParticularUser:'http://localhost:4500/Routes/v1/users/get',
     getLimitedUsers:'http://localhost:4500/Routes/v1/users/getlimited',
     DeleteUser:'http://localhost:4500/Routes/v1/users/delete',
     searchUser:'http://localhost:4500/Routes/v1/users/search'

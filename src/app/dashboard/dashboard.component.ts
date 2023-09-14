@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../common.service';
 import * as _ from 'lodash';
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { UtilsModule } from '../utils/utils.module';
 @Component({
   selector: 'app-dashboard',
@@ -47,14 +48,14 @@ export class DashboardComponent {
       })
    
 
-  constructor(private fb: FormBuilder, private http: HttpClient,private utils:UtilsModule, private router:Router,private service:CommonService) {
+  constructor(private fb: FormBuilder, private http: HttpClient,  public activatedRoute: ActivatedRoute,private utils:UtilsModule, private authService: SocialAuthService,private router:Router,private service:CommonService) {
     this.UserDetails = this.fb.group({
       Address:this.fb.array([_.cloneDeep(this.Address)]),
       Education:this.fb.array([_.cloneDeep(this.Education)]),
       Experience:this.fb.array([_.cloneDeep(this.Experience)])
     })
-  
-    this.PatchData();
+    const body={email:this.service.getLocalStorage().EmailEntered};
+    this.PatchData(body);
 
   }
 
@@ -126,11 +127,13 @@ async createuserDetails(){
     this.check -= 1;
   }
 
- async PatchData(){
-   const body={email:this.service.getLocalStorage().EmailEntered};
+ async PatchData(body:any){
+   
+   console.log('isnide patch value coming ',body);
+   
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
-   console.log('responsei is ',this.HttpResponse.data.userDetials);
-   if(this.HttpResponse.data.userDetials){
+  //  console.log('responsei is ',this.HttpResponse.data.userDetials);
+   if(this.HttpResponse.data?.userDetials){
     console.log('insdie repsonsei ',Object.keys(this.HttpResponse.data.userDetials));
     
       Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
@@ -157,8 +160,33 @@ async createuserDetails(){
    }
   }
   
-  logout(){
-   localStorage.removeItem('userObject');
+ signOut(){
+    this.authService.signOut();
+  }
+
+  async logout(){
+  //  localStorage.removeItem('userObject');
+   let email=this.service.getLocalStorage().EmailEntered;
+
+   this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:email}).toPromise()
+   
+   
+    if(this.HttpResponse.data.userType=='facebook' || this.HttpResponse.data.userType=='google'){
+      this.signOut();
+     
+    }
+  
+  localStorage.removeItem('userObject');
     this.router.navigate(['/home']);
   }
+  id:any
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.id = params.get('id');
+      console.log('id come is ',this.id);
+      const body={_id:this.service.getLocalStorage()._id};
+      this.PatchData(body)
+    })
+  }
+
 }
