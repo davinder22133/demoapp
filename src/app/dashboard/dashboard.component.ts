@@ -67,6 +67,7 @@ EducationYearValidator(control:FormControl){
     })
     const body={email:this.service.getLocalStorage().EmailEntered};
     this.PatchData(body);
+    alert('inside constructor called')
     // this.currentYear = new Date().getFullYear();
   }
 
@@ -143,6 +144,7 @@ async createuserDetails(){
  async PatchData(body:any){
    
  
+   console.log('bodu is ',body);
    
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
    console.log('responsei is ',this.HttpResponse);
@@ -179,7 +181,7 @@ async createuserDetails(){
   async logout(){
   //  localStorage.removeItem('userObject');
    let email=this.service.getLocalStorage().EmailEntered;
-
+  // localStorage.clear()
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:email}).toPromise()
    
    
@@ -193,9 +195,15 @@ async createuserDetails(){
   }
   id:any
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.id = params.get('id');
-     
+
+    alert('ngoniit called ')
+    
+    this.activatedRoute.paramMap.subscribe((params:any) => {
+      console.log('params i s ',params.params._id);
+      
+      this.id = params.params._id;
+     console.log('id coming is ',this.id);
+     if(this.id==null) return;
       const body={_id:this.id};
       this.PatchData(body)
     })

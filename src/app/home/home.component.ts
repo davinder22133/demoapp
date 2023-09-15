@@ -85,18 +85,25 @@ loggedIn: boolean=false;
     
       this.loggedIn = (user != null);
       if(this.user==null) return;
-   
+      console.log('user si ',this.user);
+      
       this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:this.user.email}).toPromise();
    
        if(this.HttpResponse.data==null){
        
+        console.log('null present');
         
     const  body={
       name:this.user.firstName,
       email:this.user.email,
      
       userType:this.user.provider}
-    let createUser= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise();
+    let createUser:any= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise();
+    console.log('user created si ',createUser);
+   if(createUser.data==null){
+    alert(createUser.error);
+    this.router.navigate(['/'+this.service.getLocalStorage().previousUrl])
+   }
   }
 
 

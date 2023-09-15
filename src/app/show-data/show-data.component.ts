@@ -17,12 +17,12 @@ subheaders:any=[]
 
 fillSubheaders(apiData:any){
   for(let i=0;i<this.apiData.data.length;i++){
-    console.log('ehloo ');
-    console.log('api data is ',this.apiData);
+    // console.log('ehloo ');
+    // console.log('api data is ',this.apiData);
     this.headers=[];
     this.subheaders=[]
     if(this.apiData.data[i].userDetials){
-      console.log('ehloo ');
+      // console.log('ehloo ');
       
       let keys=Object.keys(this.apiData.data[i].userDetials)
       keys=keys.slice(1,keys.length-1)
@@ -41,7 +41,7 @@ fillSubheaders(apiData:any){
     .set('endIndex', this.endIndex); 
      
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
-    console.log('apidata again cmoing is ',this.apiData);
+    // console.log('apidata again cmoing is ',this.apiData);
     
     this.fillSubheaders(this.apiData)
   }
@@ -52,15 +52,15 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
     .set('endIndex', this.endIndex);  
 
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
-console.log('api data inside first is ',this.apiData);
+// console.log('api data inside first is ',this.apiData);
   this.headers.push('Basic Info ');
-  console.log('apidata ois ',this.apiData.data);
+  // console.log('apidata ois ',this.apiData.data);
   
     // for(this.apiData)
     for(let i=0;i<this.apiData.data.length;i++){
 
       if(this.apiData.data[i].userDetials){
-        console.log('ehloo ');
+        // console.log('ehloo ');
         
         let keys=Object.keys(this.apiData.data[i].userDetials)
         keys=keys.slice(1,keys.length-1)
@@ -91,7 +91,7 @@ console.log('api data inside first is ',this.apiData);
   lengthCount(i:any){
   //  if(thi)
    if( this.subheaders[i]==undefined) return 1;
-    console.log('array ',this.subheaders[i],'length is ',Object.keys(this.subheaders[i]).length);
+    // console.log('array ',this.subheaders[i],'length is ',Object.keys(this.subheaders[i]).length);
     
   return Object.keys(this.subheaders[i]).length-1;
    
@@ -147,7 +147,7 @@ ObjecKeysValues(el:any){
 CheckYearArray(el:any){
  
   
-  console.log('el coming is ',el);
+  // console.log('el coming is ',el);
   
   if(typeof(el)=='object'){
 
@@ -163,7 +163,7 @@ async delete(row:any){
 // console.log('de;ete row is ',row._id);
 const body={_id:'64faad447a8d2f4f1e97264e'}
 let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPromise();
-  console.log('x sio ',x);
+  // console.log('x sio ',x);
   
 }
 
@@ -175,7 +175,7 @@ console.log('rpw id is ',row._id);
 
  this.router.navigate(['/dashboard',row._id])  
   this.service.addtoLocalStorage('previousUrl' ,'showDetials')
-  // this.router.navigate(['/login']);
+// this.router.navigate(['/login']);                                                                                        
 }
 
 
@@ -185,10 +185,10 @@ async search_data(){
   const params = new HttpParams()
 .set('startIndex', this.startIndex)  
 .set('endIndex', this.endIndex); 
-console.log('searchtext is ',this.search_text);
+// console.log('searchtext is ',this.search_text);
 const body={name:this.search_text};
 this.apiData.data=await this.service.httpPostRequest(this.utils.URLs.searchUser,body,params).toPromise();
-console.log('api data is ',this.apiData);
+// console.log('api data is ',this.apiData);
 
 
 
