@@ -72,13 +72,13 @@
 
 
     
-     <tr *ngFor="let education of row.userDetials.Education">
+     <ng-container *ngFor="let education of row.userDetials.Education">
       
       <td *ngFor="let i of ObjecKeysValues(education)" >
         {{CheckYearArray(i)}} 
        </td>
 
-      </tr>
+      </ng-container >
 
    
      

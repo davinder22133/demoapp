@@ -1,20 +1,11 @@
-function delayWithPromise(milliseconds) {
+function x() {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve('Delay completed after ' + milliseconds + ' milliseconds');
-      }, milliseconds);
+        resolve(10);
+      }, 2000);
     });
   }
   
-  async function runDelayedCode() {
-    console.log('Before delay');
-    
-    const result = await delayWithPromise(3000); // Replace 3000 with the desired delay time in milliseconds
-    
-    console.log(result, ' vfhdfv');
-    
-    console.log('After delay');
-  }
-  
-  runDelayedCode();
-  
+  x().then((a) => {
+    console.log('a is', a); // This will log 'a is 10' after a 2-second delay
+  });

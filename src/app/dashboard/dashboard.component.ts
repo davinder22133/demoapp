@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../common.service';
 import * as _ from 'lodash';
@@ -14,6 +14,7 @@ import { UtilsModule } from '../utils/utils.module';
 export class DashboardComponent {
   UserDetails!: any;
   HttpResponse:any
+  currentYear:number= new Date().getFullYear()
   check: any = 0;
   Address:any= this.fb.group({
         houseNo: this.fb.control('', [Validators.required]),
@@ -25,13 +26,23 @@ export class DashboardComponent {
     
 
 
+EducationYearValidator(control:FormControl){
+
+  // console.log('this form is ',this.UserDetails);
+  
+//  console.log(this.getControlValue('Education'),'');
+  
+  return null;
+}
+
+
     Education:any= this.fb.group({
           SchoolName_CollegeName: this.fb.control('', [Validators.required]),
           Percentage_CGPA: this.fb.control('', [Validators.required]),
           Class_Degree: this.fb.control(''),
           Year: this.fb.group({
-            To: this.fb.control('', [Validators.required]),
-            From: this.fb.control('', [Validators.required])
+            To: this.fb.control( 2019,[Validators.required]),
+            From: this.fb.control(2023,[Validators.required,this.EducationYearValidator])
           })
         })
     
@@ -56,7 +67,7 @@ export class DashboardComponent {
     })
     const body={email:this.service.getLocalStorage().EmailEntered};
     this.PatchData(body);
-
+    // this.currentYear = new Date().getFullYear();
   }
 
 
@@ -120,6 +131,8 @@ async createuserDetails(){
 
   
   next() {
+   
+    
     this.check += 1;
   }
 
@@ -129,20 +142,19 @@ async createuserDetails(){
 
  async PatchData(body:any){
    
-   console.log('isnide patch value coming ',body);
+ 
    
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
-  //  console.log('responsei is ',this.HttpResponse.data.userDetials);
+   console.log('responsei is ',this.HttpResponse);
    if(this.HttpResponse.data?.userDetials){
-    console.log('insdie repsonsei ',Object.keys(this.HttpResponse.data.userDetials));
     
       Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
-        console.log('e is ',e);
+       
           if(Array.isArray(this.HttpResponse.data.userDetials[e])){
            
             
         for(let i=0;i<this.HttpResponse.data.userDetials[e].length-1;i++){
-          console.log('insdie add form');
+        
           
             this.addForm(e);
           
@@ -183,8 +195,8 @@ async createuserDetails(){
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.id = params.get('id');
-      console.log('id come is ',this.id);
-      const body={_id:this.service.getLocalStorage()._id};
+     
+      const body={_id:this.id};
       this.PatchData(body)
     })
   }

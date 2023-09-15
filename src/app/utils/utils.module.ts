@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CommonService } from '../common.service';
 
 
 
@@ -24,14 +25,9 @@ export class UtilsModule {
     searchUser:'http://localhost:4500/Routes/v1/users/search'
   }
 
-  //  TimerFunction(fn:any,delay:any) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(fn());
-  //     }, delay);
-  //   });
-  // }
-  
+  constructor(private service:CommonService){}
+
+
 
 
  }

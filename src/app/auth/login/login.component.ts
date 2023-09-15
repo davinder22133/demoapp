@@ -30,8 +30,10 @@ async loginUser(){
   this.HttpResponse=response;
   
   if(!this.HttpResponse.data){
-
-    this.router.navigate(['/home']);
+    console.log('http response is ',this.HttpResponse);
+    
+    alert(this.HttpResponse.error);
+    this.router.navigate(['/'+this.service.getLocalStorage().previousUrl]);
   }
 
   else{

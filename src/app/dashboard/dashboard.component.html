@@ -20,7 +20,7 @@
       <h2>Add Address Details</h2>
 
       <div formArrayName="Address">
-        <ng-container *ngFor="let addressGroup of UserDetails.get('Address').controls; let i = index" class="common">
+        <ng-container *ngFor="let addressGroup of UserDetails?.get('Address')?.controls; let i = index" class="common">
 
           <div formGroupName="{{i}}" class="blue">
             <div class="form-group">
@@ -74,8 +74,13 @@
             style="margin-bottom: 20px;">Remove</button>
           <button (click)="addForm('Address')" type="button" class="btn btn-success">Add</button>
 
+
         </ng-container>
+
+     
       </div>
+      <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
+      style="margin-top: 20px;" [disabled]="UserDetails.get('Address').invalid">Next</button>
     </div>
 
 
@@ -113,7 +118,8 @@
             <div [formGroupName]="'Year'">
               <div class="form-group">
                 <label for="Yearto">To</label>
-                <input type="date" id="Yearto" formControlName="To" class="form-control" />
+                <!-- <input type="date" id="Yearto" formControlName="To" class="form-control" /> -->
+                <input type="number" id="year"  formControlName="To"  name="year" min="1900" step="1" [max]="currentYear" value="2023">
                 <br>
                 <small
                   *ngIf="Validator('Education',i).get('Year').get('To').hasError('required') && Validator('Education',i).get('Year').get('To')?.touched"
@@ -123,8 +129,9 @@
 
               <div class="form-group">
                 <label for="From">From</label>
-                <input type="date" id="From" formControlName="From" class="form-control" />
-
+                <!-- <input type="date" id="From" formControlName="From" class="form-control" /> -->
+                <input type="number" id="year"  formControlName="From"  name="year" min="1900" step="1" [max]="currentYear" value="2023">
+              
                 <br>
                 <small
                   *ngIf="Validator('Education',i).get('Year').get('From').hasError('required') && Validator('Education',i).get('Year').get('From')?.touched"
@@ -146,7 +153,8 @@
       </div>
       <!-- <button (click)="addAddress()" type="button" class="btn btn-success">Add Address</button>
           <button type="submit" class="btn btn-primary">Submit</button> -->
-
+          <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
+          style="margin-top: 20px;" [disabled]="UserDetails.get('Education').invalid">Next</button>
     </div>
 
 
@@ -181,7 +189,8 @@
             <div [formGroupName]="'Year'">
               <div class="form-group">
                 <label for="Yearto">To</label>
-                <input type="date" id="Yearto" formControlName="To" class="form-control" />
+                <!-- <input type="date" id="Yearto" formControlName="To" class="form-control" /> -->
+                <input type="number" id="year"  formControlName="To"  name="year" min="1900" step="1" [max]="currentYear" value="2019">
                 <br>
                 <small
                   *ngIf="Validator('Experience',i).get('Year').get('To').hasError('required') && Validator('Experience',i).get('Year').get('To')?.touched"
@@ -191,8 +200,8 @@
 
               <div class="form-group">
                 <label for="From">From</label>
-                <input type="date" id="From" formControlName="From" class="form-control" />
-
+                <!-- <input type="date" id="From" formControlName="From" class="form-control" /> -->
+                <input type="number" id="year"  formControlName="From"  name="year" min="1900" step="1" [max]="currentYear" value="2023">
                 <br>
                 <small
                   *ngIf="Validator('Experience',i).get('Year').get('From').hasError('required') && Validator('Experience',i).get('Year').get('From')?.touched"
@@ -245,8 +254,9 @@
           <!-- <button (click)="removeAddress(i)" type="button" class="btn btn-danger">Remove</button> -->
         </div>
       </div>
-
-
+      
+      <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
+      style="margin-top: 20px;" [disabled]="UserDetails.get('Experience').invalid">Next</button>
 
     </div>
 
@@ -254,9 +264,9 @@
 
   <button type="submit" class="btn btn-primary" *ngIf="check!=0" (click)="prev()">Previous</button>
 
-  <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
-    style="margin-top: 20px;">Next</button>
-  <button type="submit" *ngIf="check==2" class="btn btn-primary" (click)="submit_btn()">Submit</button>
+  <!-- <button type="submit" class="btn btn-primary" *ngIf="check!=2" (click)="next()"
+    style="margin-top: 20px;">Next</button> -->
+  <button type="submit" *ngIf="check==2" class="btn btn-primary" [disabled]='UserDetails.invalid'(click)="submit_btn()">Submit</button>
 </div>
 
 

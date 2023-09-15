@@ -11,8 +11,7 @@ export const guardGuard: CanActivateFn = async (route, state) => {
   const utils=inject(UtilsModule)
   let previousUrl;
 
-  console.log('current route is ',currentRoutes)
-  
+
   // log
   if(!service.getLocalStorage()){
 
@@ -27,8 +26,7 @@ export const guardGuard: CanActivateFn = async (route, state) => {
   
   
   if(currentRoutes=='showDetials'){
-    console.log('inside  show details');
-    
+   
     // service.addtoLocalStorage('previousUrl','showDetials')
 
    let email= service.getLocalStorage().EmailEntered
@@ -36,16 +34,15 @@ export const guardGuard: CanActivateFn = async (route, state) => {
    
    if(email==undefined) return false;
     let ab: any = await service.httpPostRequest(utils.URLs.checkUserUrl,{email:email}).toPromise()
-   console.log('ab si ',ab);
+  //  console.log('ab si ',ab);
    
     
     if(ab && ab.data.userAccess=='admin'){
       return true;
      
     }
-    service.addtoLocalStorage('previousUrl',currentRoutes);
-    localStorage.removeItem('userObject');
-    router.navigate(['/home'])
+  
+   router.navigate(['/'+service.getLocalStorage().previousUrl]) 
     return false;
    
   }
@@ -53,7 +50,7 @@ export const guardGuard: CanActivateFn = async (route, state) => {
 
  
 
-  console.log('current route is ',currentRoutes);
+  // console.log('current route is ',currentRoutes);
   
   if(currentRoutes=='login' && previousUrl=='showDetials' ){
     service.addtoLocalStorage('previousUrl' ,'login')

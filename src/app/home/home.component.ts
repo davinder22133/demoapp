@@ -14,6 +14,7 @@ export class HomeComponent {
   useremail: string = '';
   userObject:any={};
   HttpResponse:any=null;
+  LoadingScreen:boolean=false
   form:FormGroup
   passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
 
@@ -34,25 +35,25 @@ export class HomeComponent {
   async CheckUser(){
     const body={email:this.service.getLocalStorage().EmailEntered};
     
+    this.LoadingScreen=true;
+    console.log('Loading scrren become true');
     
   //  CHECK USER EXIST IN DB OR NOT
-    let response=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
-    console.log("response si ",response); // response.data is not accessbile
-    this.HttpResponse=response;
-    
+  this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
+   
+  
     if(!this.HttpResponse.data){
       
       // CREATE LEAD
      let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
     
     
-    
+     this.LoadingScreen=false;
       this.router.navigate(['/register']);
     }
 
     else{
-      alert('login go')
-      
+      this.LoadingScreen=false;
       this.router.navigate(['/login']);
     }
 
@@ -66,8 +67,8 @@ export class HomeComponent {
     
   
    this.service.addtoLocalStorage("EmailEntered",email);
-   setTimeout(()=>{this.CheckUser()},1000);
-  // this.utils.TimerFunction(this.CheckUser,2000)
+  
+  this.CheckUser()
   }
   
 
@@ -77,29 +78,25 @@ loggedIn: boolean=false;
 
 
    ngOnInit() {
-    console.log('this is ngOnit called');
+  
     
     this.authService.authState.subscribe(async (user) => {
       this.user = user;
-      console.log('inside subscirbe ',this.user);
+    
       this.loggedIn = (user != null);
       if(this.user==null) return;
-      // console.log('this user comgin is  ',this.user);
-     
-      let userExist=this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:this.user.email}).toPromise();
-      console.log('userExist is ',userExist);
+   
+      this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:this.user.email}).toPromise();
+   
        if(this.HttpResponse.data==null){
-        // console.log('inide data null ');
+       
         
     const  body={
       name:this.user.firstName,
       email:this.user.email,
      
       userType:this.user.provider}
-    let createUser= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise()
-    console.log('createdUSr is ',createUser);
-    
-   ;
+    let createUser= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise();
   }
 
 

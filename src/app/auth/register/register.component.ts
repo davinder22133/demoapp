@@ -14,6 +14,7 @@ export class RegisterComponent {
   form:FormGroup
   ImageUrl:string=''
   imageUploaded:boolean=false
+  LoadingScreen:boolean=false
   HttpResponse:any
   passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
   constructor( private http: HttpClient,private router: Router,private filestack:FileStackService,private service:CommonService,private utils:UtilsModule){
@@ -49,6 +50,7 @@ export class RegisterComponent {
       Password:this.form.get('password')?.value,
       confirmPassword:this.form.get('confirmPassword')?.value,
       userType:'direct',
+     
       }
       
 
@@ -57,18 +59,21 @@ export class RegisterComponent {
       }
 
       // CREATE USER
+      this.LoadingScreen=true
       this.HttpResponse= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise()
       
       
       
       if(!this.HttpResponse.data){
-        alert('error wile creating user please try again')
+        alert(this.HttpResponse.error)
+        this.LoadingScreen=false
         this.router.navigate(['/register']);
         return;
       }  
       
         // console.log();
         alert('navingating to dashboard')
+        this.LoadingScreen=false
         this.service.addtoLocalStorage('login',true);
         this.router.navigate(['/dashboard']);
        
@@ -86,13 +91,10 @@ export class RegisterComponent {
     return result;
   }
   Submit(){
-    console.log('sibmit called');
+  
     
     this.createUser();
   }
 
-  formPrint(){
-    console.log(this.form);
-    
-  }
+
 }

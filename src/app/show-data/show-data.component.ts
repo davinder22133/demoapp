@@ -15,7 +15,25 @@ export class ShowDataComponent {
   count:any
 subheaders:any=[]
 
-
+fillSubheaders(apiData:any){
+  for(let i=0;i<this.apiData.data.length;i++){
+    console.log('ehloo ');
+    console.log('api data is ',this.apiData);
+    this.headers=[];
+    this.subheaders=[]
+    if(this.apiData.data[i].userDetials){
+      console.log('ehloo ');
+      
+      let keys=Object.keys(this.apiData.data[i].userDetials)
+      keys=keys.slice(1,keys.length-1)
+      this.headers=keys;
+      this.subheaders.push(this.apiData.data[i].userDetials.Address[0]);
+      this.subheaders.push(this.apiData.data[i].userDetials.Education[0]);
+      this.subheaders.push(this.apiData.data[i].userDetials.Experience[0]);
+      break;
+    }
+  }
+}
 
   async GetAgain(){
     const params = new HttpParams()
@@ -23,8 +41,9 @@ subheaders:any=[]
     .set('endIndex', this.endIndex); 
      
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
-    console.log('api data is ',this.apiData);
+    console.log('apidata again cmoing is ',this.apiData);
     
+    this.fillSubheaders(this.apiData)
   }
 
   async getData(){
@@ -33,14 +52,15 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
     .set('endIndex', this.endIndex);  
 
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
+console.log('api data inside first is ',this.apiData);
   this.headers.push('Basic Info ');
-  console.log('apidata ois ',this.apiData);
+  console.log('apidata ois ',this.apiData.data);
   
     // for(this.apiData)
     for(let i=0;i<this.apiData.data.length;i++){
 
       if(this.apiData.data[i].userDetials){
-        // console.log('ehloo ');
+        console.log('ehloo ');
         
         let keys=Object.keys(this.apiData.data[i].userDetials)
         keys=keys.slice(1,keys.length-1)
@@ -127,9 +147,11 @@ ObjecKeysValues(el:any){
 CheckYearArray(el:any){
  
   
-
+  console.log('el coming is ',el);
+  
   if(typeof(el)=='object'){
-   const result = el.From.split('-')[0] + '-' + el.To.split('-')[0];
+
+   const result = el.From + '-' + el.To;
    return result
   }
 
@@ -147,8 +169,10 @@ let x=await this.service.httpDeleteRequest(this.utils.URLs.DeleteUser,body).toPr
 
 
 update(row:any){
- 
+alert('insie update')
 //  this.service.addtoLocalStorage("EmailEntered",row.email);
+console.log('rpw id is ',row._id);
+
  this.router.navigate(['/dashboard',row._id])  
   this.service.addtoLocalStorage('previousUrl' ,'showDetials')
   // this.router.navigate(['/login']);
@@ -184,7 +208,7 @@ updateBtn(){
   this.currentPage=1;
   this.updatePagedIndex();
   this.startIndex=0;
-  this.getData()
+  this.GetAgain()
 }
   
   startIndex:any=0;

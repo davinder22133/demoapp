@@ -61,8 +61,8 @@
         <!-- [disabled]="form.status=='invalid'" -->
        
         <!-- <button (click)="Submit()" [disabled]="form.status=='INVALID'">Submit</button> -->
-    
-        <button (click)="Submit()"[disabled]="form.invalid">Submit</button>
+          <!-- [disabled]="form.invalid" -->
+        <button (click)="Submit()" [disabled]="form.invalid">Submit</button>
       </form>
     </div>
     </div>
@@ -71,6 +71,5 @@
 
   
 
+<h1 *ngIf="LoadingScreen">Loading data.....</h1>
 
-
-<button (click)="formPrint()">FormPrint</button>

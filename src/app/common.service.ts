@@ -23,14 +23,14 @@ export class CommonService {
 
   addtoLocalStorage(key: any, value: any) {
 
-    console.log('keu cmgin s ',key);
+    
     
     if (this.getLocalStorage()) { // when data present is not null
       let object = this.getLocalStorage();
      
       
       object[key] = value;
-      console.log('inside if ',object);
+     
       localStorage.setItem('userObject', JSON.stringify(object));
       return;
     }
@@ -44,16 +44,13 @@ export class CommonService {
   httpPostRequest(url: any, body:any=null,params:any=null) {
     
     // if(params==null )
-    console.log('params i s ',params,' body is ',body);
-    
-   
+  
     if(body==null && params!=null){
       return this.http.post(url,{},{params});
     }
    
     if(params==null && body!=null){
-      console.log('this cpart called');
-      
+       
     return this.http.post(url, body);
     }
     return this.http.post(url,body,{params});
@@ -61,7 +58,7 @@ export class CommonService {
 
 
   httpDeleteRequest(url:any,body:any){
-    console.log('url is ',url,'bod y is ',body);
+  
     
     return this.http.delete(url,body);
   }
