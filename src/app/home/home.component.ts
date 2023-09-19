@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
 import { UtilsModule } from '../utils/utils.module';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
+import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -36,27 +37,29 @@ export class HomeComponent {
     const body={email:this.service.getLocalStorage().EmailEntered};
     
     this.LoadingScreen=true;
-    console.log('Loading scrren become true');
-    
-  //  CHECK USER EXIST IN DB OR NOT
-  this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
-   
-  console.log('http resoinie of check is ',this.HttpResponse);
   
-    if(!this.HttpResponse.data){
-      
-      // CREATE LEAD
-     let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
-    
-    
-     this.LoadingScreen=false;
-      this.router.navigate(['/register']);
-    }
+  //  CHECK USER EXIST IN DB OR NOT
+ 
+  let headers= new HttpHeaders()
+  headers=headers.set('email', this.form.get('email')?.value );
+  this.HttpResponse=await this.service.HTTPGetRequest(this.utils.URLs.CheckAuthUser,headers);
 
-    else{
-      this.LoadingScreen=false;
-      this.router.navigate(['/login']);
-    }
+
+  console.log("http resoinie ofhtfhfgnfhnghnghnghngh check ",this.HttpResponse);
+    // if(!this.HttpResponse.data){
+      
+    //   // CREATE LEAD
+    //  let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
+    
+    
+    //  this.LoadingScreen=false;
+    //   this.router.navigate(['/register']);
+    // }
+
+    // else{
+    //   this.LoadingScreen=false;
+    //   this.router.navigate(['/login']);
+    // }
 
   }
 

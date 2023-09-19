@@ -22,7 +22,8 @@ export class UtilsModule {
     getParticularUser:'http://localhost:4500/Routes/v1/users/get',
     getLimitedUsers:'http://localhost:4500/Routes/v1/users/getlimited',
     DeleteUser:'http://localhost:4500/Routes/v1/users/delete',
-    searchUser:'http://localhost:4500/Routes/v1/users/search'
+    searchUser:'http://localhost:4500/Routes/v1/users/search',
+    CheckAuthUser:'http://localhost:4500/Routes/v1/auth/check'
   }
 
   constructor(private service:CommonService){}

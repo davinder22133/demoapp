@@ -56,19 +56,98 @@ export class CommonService {
     headers=headers.set('token',localStorage.getItem('token') as string);
     console.log(headers, ' HEADER ISNDIE SERVICE SI ')
     }
-    
+    document.cookie = "username=John Doe";
   
     if(body==null && params!=null){
-      return this.http.post(url,{},{params,headers});
+      return this.http.post(url,{},{params,headers,withCredentials: true });
     }
    
     if(params==null && body!=null){
        
-    return this.http.post(url, body,{headers});
+    return this.http.post(url, body,{headers });
     }
-    return this.http.post(url,body,{params,headers});
+    return this.http.post(url,body,{params,headers,withCredentials: true });
   }
 
+
+
+  HTTPGetRequest(url:string,headers:any=null){
+
+
+        
+    return new Promise((res,rej)=>{
+      let response;
+      if(headers){
+       
+         response= (this.http.get(url,{headers}));
+         response.subscribe(
+          
+          {
+          
+        next:  (data:any)=>{
+         
+          
+          res(data);
+        
+         },
+         
+
+         error:(error:any)=>{
+         
+          
+          rej(error);
+        
+         }
+
+
+        }
+         
+         )
+         
+        
+
+        
+      } 
+        
+       
+        else{
+          
+             response= (this.http.get(url,{headers}));
+         response.subscribe(
+          
+          {
+          
+        next:  (data:any)=>{
+         
+          
+          res(data);
+        
+         },
+         
+
+         error:(error:any)=>{
+         
+          
+          rej(error);
+        
+         }
+
+
+        }
+         
+         )
+         
+       
+        }
+     
+
+
+    })
+
+
+    
+
+  }
 
   httpDeleteRequest(url:any,body:any){
   
@@ -77,6 +156,64 @@ export class CommonService {
   }
 
 
+
+  
+
+
+  HTTPostRequest(url:any,body:any,params:any=null){
+
+   
+    return new Promise((res,rej)=>{
+      if(params){
+        this.http.post(url,body,{params}).subscribe(
+          {
+          
+       next:   (data)=>{
+          res(data);
+        },
+
+
+        error:(error)=>{
+          rej(error)
+        }
+      }
+        
+        )
+    
+    }
+  
+    else{
+      this.http.post(url,body).subscribe(
+        {
+        
+     next:   (data)=>{
+      res(data);
+      },
+
+
+      error:(error)=>{
+        rej(error);
+      }
+    }
+      
+      )
+    }
+  
+  
+  }
+    
+    
+   
+
+
+    )
+
+
+
+   
+    
+
+  }
  
 
 }
