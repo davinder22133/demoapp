@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -8,7 +8,7 @@ export class CommonService {
   userObject: any = {};
   RegisterLoginCheck: boolean = false;
   constructor(private http: HttpClient) { }
-
+  Token:any
 
 
 
@@ -44,16 +44,29 @@ export class CommonService {
   httpPostRequest(url: any, body:any=null,params:any=null) {
     
     // if(params==null )
+
+
+    // console.log('token inside service is ',localStorage.getItem('token') as string);
+    
+    let headers= new HttpHeaders()
+
+    if(localStorage.getItem('token')){
+
+    
+    headers=headers.set('token',localStorage.getItem('token') as string);
+    console.log(headers, ' HEADER ISNDIE SERVICE SI ')
+    }
+    
   
     if(body==null && params!=null){
-      return this.http.post(url,{},{params});
+      return this.http.post(url,{},{params,headers});
     }
    
     if(params==null && body!=null){
        
-    return this.http.post(url, body);
+    return this.http.post(url, body,{headers});
     }
-    return this.http.post(url,body,{params});
+    return this.http.post(url,body,{params,headers});
   }
 
 

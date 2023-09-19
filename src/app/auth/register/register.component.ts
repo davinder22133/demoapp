@@ -73,6 +73,7 @@ export class RegisterComponent {
       
         // console.log();
         alert('navingating to dashboard')
+        localStorage.setItem('token',this.HttpResponse.token)
         this.LoadingScreen=false
         this.service.addtoLocalStorage('login',true);
         this.router.navigate(['/dashboard']);

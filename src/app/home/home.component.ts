@@ -41,6 +41,7 @@ export class HomeComponent {
   //  CHECK USER EXIST IN DB OR NOT
   this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,body).toPromise();
    
+  console.log('http resoinie of check is ',this.HttpResponse);
   
     if(!this.HttpResponse.data){
       
@@ -77,47 +78,48 @@ export class HomeComponent {
 loggedIn: boolean=false;
 
 
-   ngOnInit() {
+  //  ngOnInit() {
   
     
-    this.authService.authState.subscribe(async (user) => {
-      this.user = user;
+  //   this.authService.authState.subscribe(async (user) => {
+  //     this.user = user;
     
-      this.loggedIn = (user != null);
-      if(this.user==null) return;
-      console.log('user si ',this.user);
+  //     this.loggedIn = (user != null);
+  //     if(this.user==null) return;
+
+  //     console.log('user si ',this.user);
       
-      this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:this.user.email}).toPromise();
+  //     this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:this.user.email}).toPromise();
    
-       if(this.HttpResponse.data==null){
+  //      if(this.HttpResponse.data==null){
        
-        console.log('null present');
+  //       console.log('null present');
         
-    const  body={
-      name:this.user.firstName,
-      email:this.user.email,
+  //   const  body={
+  //     name:this.user.firstName,
+  //     email:this.user.email,
      
-      userType:this.user.provider}
-    let createUser:any= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise();
-    console.log('user created si ',createUser);
-   if(createUser.data==null){
-    alert(createUser.error);
-    this.router.navigate(['/'+this.service.getLocalStorage().previousUrl])
-   }
-  }
+  //     userType:this.user.provider}
+  //   let createUser:any= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise();
+  //   console.log('user created si ',createUser);
+  //  if(createUser.data==null){
+  //   alert(createUser.error);
+  //   this.router.navigate(['/'+this.service.getLocalStorage().previousUrl])
+  //  }
+  // }
 
 
-  this.service.addtoLocalStorage('login',true);
-  this.service.addtoLocalStorage('EmailEntered',this.user.email);
-  this.router.navigate(['/dashboard']);
+  // this.service.addtoLocalStorage('login',true);
+  // this.service.addtoLocalStorage('EmailEntered',this.user.email);
+  // this.router.navigate(['/dashboard']);
 
-    });
-
-
+  //   });
 
 
 
-  }
+
+
+  // }
 
 
 

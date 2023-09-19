@@ -27,7 +27,7 @@ export class UtilsModule {
 
   constructor(private service:CommonService){}
 
-
+  
 
 
  }

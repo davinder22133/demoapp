@@ -16,6 +16,8 @@ export class DashboardComponent {
   HttpResponse:any
   currentYear:number= new Date().getFullYear()
   check: any = 0;
+  
+
   Address:any= this.fb.group({
         houseNo: this.fb.control('', [Validators.required]),
         StreetNo: this.fb.control('', [Validators.required]),
@@ -67,7 +69,7 @@ EducationYearValidator(control:FormControl){
     })
     const body={email:this.service.getLocalStorage().EmailEntered};
     this.PatchData(body);
-    alert('inside constructor called')
+    // alert('inside constructor called')
     // this.currentYear = new Date().getFullYear();
   }
 
@@ -148,6 +150,9 @@ async createuserDetails(){
    
    this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
    console.log('responsei is ',this.HttpResponse);
+  if(this.HttpResponse.message=='SignOut'){
+    this.logout();
+  }
    if(this.HttpResponse.data?.userDetials){
     
       Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
@@ -196,7 +201,7 @@ async createuserDetails(){
   id:any
   ngOnInit() {
 
-    alert('ngoniit called ')
+    // alert('ngoniit called ')
     
     this.activatedRoute.paramMap.subscribe((params:any) => {
       console.log('params i s ',params.params._id);

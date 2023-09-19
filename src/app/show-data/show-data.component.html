@@ -8,9 +8,9 @@
       <tr>
         <th colspan="2">Basic Info</th>
         <!-- <ng-container *ngIf="apiData"> -->
-        <th *ngFor="let item of headers; let i = index" [attr.colspan]="lengthCount(i)">
-         <ng-container class="border"> {{ item  }}</ng-container>
-        </th>
+        <ng-container *ngFor="let item of headers; let i = index" >
+           <th [attr.colspan]="lengthCount(i)" class="border"> {{ item  }}</th>
+        </ng-container>
         <!-- </ng-container> -->
       </tr>
     </thead>
@@ -31,19 +31,26 @@
 
 
     <!-- <ng-container *ngIf="apiData.data[0].userDetials.Education"> -->
-      <td *ngFor="let i of OBjectKeysToArray(subheaders[1])">
-        <p class="border">{{i}} </p> 
-       </td>
+      <td>
+        <tr>
+          <td *ngFor="let i of OBjectKeysToArray(subheaders[1])">
+            <p class="border">{{i}} </p> 
+           </td>
+        </tr>
+      </td>
  
      <!-- </ng-container> -->
 
 
      
     <!-- <ng-container *ngIf="apiData.data[0].userDetials.Experience"> -->
-      <td *ngFor="let i of OBjectKeysToArray(subheaders[2])">
-        <p class="border">{{i}} </p> 
-       </td>
- 
+      <td>
+        <tr>
+          <td *ngFor="let i of OBjectKeysToArray(subheaders[2])">
+            <p class="border">{{i}} </p> 
+           </td>  
+        </tr>
+      </td>
      <!-- </ng-container> -->
     <!-- </ng-container> -->
 
@@ -72,21 +79,24 @@
 
 
     
-     <ng-container *ngFor="let education of row.userDetials.Education">
+     <td>
+      <tr *ngFor="let education of row.userDetials.Education">
       
-      <td *ngFor="let i of ObjecKeysValues(education)" >
-        {{CheckYearArray(i)}} 
-       </td>
-
-      </ng-container >
+        <td *ngFor="let i of ObjecKeysValues(education)" >
+          {{CheckYearArray(i)}} 
+         </td>
+  
+        </tr >
+     </td>
 
    
-     
-       <ng-container *ngFor="let exp of row.userDetials.Experience">
+     <td>
+       <tr *ngFor="let exp of row.userDetials.Experience">
         <td *ngFor="let i of ObjecKeysValues(exp)">
           {{CheckYearArray(i)}} 
          </td>
-         </ng-container>
+        </tr>
+      </td>
 
      </ng-container>
      <td>

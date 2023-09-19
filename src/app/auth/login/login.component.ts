@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,10 +37,18 @@ async loginUser(){
   }
 
   else{
+     
     this.service.RegisterLoginCheck=true;
+  
     this.service.addtoLocalStorage('login',true);
+    console.log('Responie i s ',this.HttpResponse);
+
+
+    localStorage.setItem('token',this.HttpResponse.token)
     this.router.navigate(['/dashboard']);
   }
+
+
   return;
 }
 
