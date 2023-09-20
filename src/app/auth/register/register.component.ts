@@ -60,23 +60,29 @@ export class RegisterComponent {
 
       // CREATE USER
       this.LoadingScreen=true
-      this.HttpResponse= await this.service.httpPostRequest(this.utils.URLs.createuserUrl,body).toPromise()
-      
-      
-      
-      if(!this.HttpResponse.data){
+    this.service.HTTPPostRequest(this.utils.URLs.createuserUrl,body).subscribe({
+      next:(response:any)=>{
+        // console.log('data is ',data);
+              
+      if(!response.data){
         alert(this.HttpResponse.error)
         this.LoadingScreen=false
         this.router.navigate(['/register']);
         return;
       }  
       
-        // console.log();
+        
         alert('navingating to dashboard')
-        localStorage.setItem('token',this.HttpResponse.token)
+        localStorage.setItem('token',response.token)
         this.LoadingScreen=false
         this.service.addtoLocalStorage('login',true);
         this.router.navigate(['/dashboard']);
+      },
+      error:(erroe)=>{}
+    })
+      
+      
+
        
 
   }

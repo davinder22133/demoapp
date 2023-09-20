@@ -30,10 +30,8 @@ export class DashboardComponent {
 
 EducationYearValidator(control:FormControl){
 
-  // console.log('this form is ',this.UserDetails);
-  
-//  console.log(this.getControlValue('Education'),'');
-  
+console.log('');
+
   return null;
 }
 
@@ -69,8 +67,7 @@ EducationYearValidator(control:FormControl){
     })
     const body={email:this.service.getLocalStorage().EmailEntered};
     this.PatchData(body);
-    // alert('inside constructor called')
-    // this.currentYear = new Date().getFullYear();
+   
   }
 
 
@@ -104,13 +101,19 @@ async createuserDetails(){
 
 
   const body={data:this.UserDetails.value,email:this.service.getLocalStorage().EmailEntered };
- this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.addUserDetails,body).toPromise();
+  let headers= new HttpHeaders()
 
- if(!this.HttpResponse.data){
-  alert('Error coming while feeding data');
-  return;
- }
- alert('data filled sucess data');
+  if(localStorage.getItem('token')){
+  headers=headers.set('token',localStorage.getItem('token') as string);
+  
+  }
+ this.service.HTTPPostRequest(this.utils.URLs.addUserDetails,body,headers).subscribe({
+  next:(data)=>{alert('data filled sucess data'); }, 
+  error:(error)=>{alert('Error coming while feeding data');}
+ })
+
+
+ 
   
 }
 
@@ -146,14 +149,21 @@ async createuserDetails(){
  async PatchData(body:any){
    
  
-   console.log('bodu is ',body);
+
+
+   let headers= new HttpHeaders()
+
+   if(localStorage.getItem('token')){
+   headers=headers.set('token',localStorage.getItem('token') as string);
    
-   this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.getParticularUser,body).toPromise();
-   console.log('responsei is ',this.HttpResponse);
-  if(this.HttpResponse.message=='SignOut'){
-    this.logout();
-  }
-   if(this.HttpResponse.data?.userDetials){
+   }
+
+ this.service.HTTPPostRequest(this.utils.URLs.getParticularUser,body,headers).subscribe({
+  next:(response:any)=>{
+  console.log('RESPONSE IS ',response);
+  
+    return;
+    if(response.data.userDetials){
     
       Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
        
@@ -175,9 +185,16 @@ async createuserDetails(){
   
   
       
-      this.UserDetails.patchValue(this.HttpResponse.data.userDetials);
+      this.UserDetails.patchValue(response.data.userDetials);
    }
-  }
+  },
+  error:(error)=>{ alert(error.error.message);}
+ })
+  
+   
+
+}
+ 
   
  signOut(){
     this.authService.signOut();
@@ -187,31 +204,32 @@ async createuserDetails(){
   //  localStorage.removeItem('userObject');
    let email=this.service.getLocalStorage().EmailEntered;
   // localStorage.clear()
-   this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:email}).toPromise()
+  //  this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:email}).toPromise()
    
    
-    if(this.HttpResponse.data.userType=='facebook' || this.HttpResponse.data.userType=='google'){
-      this.signOut();
+  //   if(this.HttpResponse.data.userType=='facebook' || this.HttpResponse.data.userType=='google'){
+  //     this.signOut();
      
-    }
+  //   }
   
   localStorage.removeItem('userObject');
+  localStorage.removeItem('token');
     this.router.navigate(['/home']);
   }
-  id:any
-  ngOnInit() {
+  // id:any
+  // ngOnInit() {
 
-    // alert('ngoniit called ')
+  //   // alert('ngoniit called ')
     
-    this.activatedRoute.paramMap.subscribe((params:any) => {
-      console.log('params i s ',params.params._id);
+  //   this.activatedRoute.paramMap.subscribe((params:any) => {
+  //     console.log('params i s ',params.params._id);
       
-      this.id = params.params._id;
-     console.log('id coming is ',this.id);
-     if(this.id==null) return;
-      const body={_id:this.id};
-      this.PatchData(body)
-    })
-  }
+  //     this.id = params.params._id;
+  //    console.log('id coming is ',this.id);
+  //    if(this.id==null) return;
+  //     const body={_id:this.id};
+  //     this.PatchData(body)
+  //   })
+  // }
 
 }

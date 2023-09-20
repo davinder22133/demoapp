@@ -38,28 +38,34 @@ export class HomeComponent {
     
     this.LoadingScreen=true;
   
-  //  CHECK USER EXIST IN DB OR NOT
+
  
   let headers= new HttpHeaders()
   headers=headers.set('email', this.form.get('email')?.value );
-  this.HttpResponse=await this.service.HTTPGetRequest(this.utils.URLs.CheckAuthUser,headers);
-
-
-  console.log("http resoinie ofhtfhfgnfhnghnghnghngh check ",this.HttpResponse);
-    // if(!this.HttpResponse.data){
+  
+   this.service.HTTPGetRequest(this.utils.URLs.CheckAuthUser,headers).subscribe({
+    next:(response:any)=>{
+     
       
-    //   // CREATE LEAD
-    //  let leadCreated= await this.service.httpPostRequest(this.utils.URLs.createLead,body).toPromise()
-    
-    
-    //  this.LoadingScreen=false;
-    //   this.router.navigate(['/register']);
-    // }
+      if(!response.data){
+        this.service.RegisterLoginCheck=true;
+        
+        this.router.navigate(['/register']); 
+        return;
+      }
 
-    // else{
-    //   this.LoadingScreen=false;
-    //   this.router.navigate(['/login']);
-    // }
+      this.router.navigate(['/login']); 
+  
+    },
+    error:(error)=>{
+   
+    }
+   });
+  
+    
+  
+ 
+
 
   }
 
@@ -77,8 +83,8 @@ export class HomeComponent {
   
 
 
-  user!: SocialUser;
-loggedIn: boolean=false;
+//   user!: SocialUser;
+// loggedIn: boolean=false;
 
 
   //  ngOnInit() {

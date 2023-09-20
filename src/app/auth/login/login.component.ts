@@ -25,13 +25,12 @@ export class LoginComponent {
 
 async loginUser(){
   const body={email:this.form.get('email')?.value,Password:this.form.get('password')?.value}
-  // LOGIN USER
-  let response= await this.service.httpPostRequest(this.utils.URLs.loginUrl,body).toPromise()
+  
+  let response= await this.service.HTTPPostRequest(this.utils.URLs.loginUrl,body)
   this.HttpResponse=response;
   
   if(!this.HttpResponse.data){
-    console.log('http response is ',this.HttpResponse);
-    
+   
     alert(this.HttpResponse.error);
     this.router.navigate(['/'+this.service.getLocalStorage().previousUrl]);
   }
@@ -41,7 +40,7 @@ async loginUser(){
     this.service.RegisterLoginCheck=true;
   
     this.service.addtoLocalStorage('login',true);
-    console.log('Responie i s ',this.HttpResponse);
+   
 
 
     localStorage.setItem('token',this.HttpResponse.token)
@@ -115,7 +114,7 @@ async loginUser(){
 async Submit(){
  
  this.loginUser();
- console.log('after logui sucess');
+
  
 }
 

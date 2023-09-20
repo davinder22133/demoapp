@@ -36,6 +36,8 @@ export const guardGuard: CanActivateFn = async (route, state) => {
     let ab: any = await service.httpPostRequest(utils.URLs.checkUserUrl,{email:email}).toPromise()
   //  console.log('ab si ',ab);
    
+  console.log('ab is ',ab);
+  
     
     if(ab && ab.data.userAccess=='admin'){
       return true;

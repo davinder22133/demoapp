@@ -73,81 +73,58 @@ export class CommonService {
 
   HTTPGetRequest(url:string,headers:any=null){
 
+    if(headers){
+    return (this.http.get(url,{headers}));   
+     } 
 
+
+     return this.http.get(url)
         
-    return new Promise((res,rej)=>{
-      let response;
-      if(headers){
-       
-         response= (this.http.get(url,{headers}));
-         response.subscribe(
-          
-          {
-          
-        next:  (data:any)=>{
-         
-          
-          res(data);
-        
-         },
-         
-
-         error:(error:any)=>{
-         
-          
-          rej(error);
-        
-         }
-
-
-        }
-         
-         )
-         
-        
-
-        
-      } 
-        
-       
-        else{
-          
-             response= (this.http.get(url,{headers}));
-         response.subscribe(
-          
-          {
-          
-        next:  (data:any)=>{
-         
-          
-          res(data);
-        
-         },
-         
-
-         error:(error:any)=>{
-         
-          
-          rej(error);
-        
-         }
-
-
-        }
-         
-         )
-         
-       
-        }
-     
-
-
-    })
-
+   
 
     
 
   }
+
+
+  HTTPPostRequest(url:string,body:any,headers:any=null){
+   
+      if(headers){
+       return (this.http.post(url,body,{headers}));   
+      } 
+
+     return (this.http.post(url,body));
+        
+      // response.subscribe(
+      //   {
+        
+      // next:  (data:any)=>{
+       
+        
+      //   res(data);
+      
+      //  },
+       
+
+      //  error:(error:any)=>{
+       
+       
+        
+      //   rej(error);
+      
+      //  }
+
+
+      // }
+       
+      //  )
+       
+
+
+
+  }
+
+
 
   httpDeleteRequest(url:any,body:any){
   
