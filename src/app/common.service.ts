@@ -71,11 +71,16 @@ export class CommonService {
 
 
 
-  HTTPGetRequest(url:string,headers:any=null){
+  HTTPGetRequest(url:string,headers:any=null,params:any=null){
+   
+    if(headers && params){
+      return (this.http.get(url, {  params: params ,headers: headers})); 
+     }
 
     if(headers){
     return (this.http.get(url,{headers}));   
      } 
+
 
 
      return this.http.get(url)
@@ -90,34 +95,15 @@ export class CommonService {
   HTTPPostRequest(url:string,body:any,headers:any=null){
    
       if(headers){
+        console.log('IONSIDE HEADER POST REQUEST');
+        
        return (this.http.post(url,body,{headers}));   
       } 
 
+
      return (this.http.post(url,body));
         
-      // response.subscribe(
-      //   {
-        
-      // next:  (data:any)=>{
-       
-        
-      //   res(data);
-      
-      //  },
-       
-
-      //  error:(error:any)=>{
-       
-       
-        
-      //   rej(error);
-      
-      //  }
-
-
-      // }
-       
-      //  )
+     
        
 
 

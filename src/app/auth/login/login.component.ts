@@ -26,26 +26,23 @@ export class LoginComponent {
 async loginUser(){
   const body={email:this.form.get('email')?.value,Password:this.form.get('password')?.value}
   
-  let response= await this.service.HTTPPostRequest(this.utils.URLs.loginUrl,body)
-  this.HttpResponse=response;
-  
-  if(!this.HttpResponse.data){
-   
-    alert(this.HttpResponse.error);
-    this.router.navigate(['/'+this.service.getLocalStorage().previousUrl]);
-  }
-
-  else{
-     
-    this.service.RegisterLoginCheck=true;
+   this.service.HTTPPostRequest(this.utils.URLs.loginUrl,body).subscribe({
+    next:(response:any)=>{
+      this.service.RegisterLoginCheck=true;
   
     this.service.addtoLocalStorage('login',true);
    
 
 
-    localStorage.setItem('token',this.HttpResponse.token)
+    localStorage.setItem('token',response.token)
     this.router.navigate(['/dashboard']);
-  }
+    return;
+    },
+    error:(error)=>{ this.router.navigate(['/'+this.service.getLocalStorage().previousUrl]);}
+   })
+
+  
+ 
 
 
   return;

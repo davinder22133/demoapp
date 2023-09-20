@@ -1,9 +1,9 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonService } from '../common.service';
 import { UtilsModule } from '../utils/utils.module';
 import { Router } from '@angular/router';
-
+import { debounceTime, fromEvent, interval, switchMap } from 'rxjs';
 @Component({
   selector: 'app-show-data',
   templateUrl: './show-data.component.html',
@@ -36,14 +36,7 @@ fillSubheaders(apiData:any){
 }
 
   async GetAgain(){
-    const params = new HttpParams()
-    .set('startIndex', this.startIndex)  
-    .set('endIndex', this.endIndex); 
-     
-this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
-    // console.log('apidata again cmoing is ',this.apiData);
-    
-    this.fillSubheaders(this.apiData)
+this.getLimitedData()
   }
 
   async getData(){
@@ -52,11 +45,9 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
     .set('endIndex', this.endIndex);  
 
 this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers,{},params).toPromise();
-// console.log('api data inside first is ',this.apiData);
+
   this.headers.push('Basic Info ');
-  // console.log('apidata ois ',this.apiData.data);
-  
-    // for(this.apiData)
+
     for(let i=0;i<this.apiData.data.length;i++){
 
       if(this.apiData.data[i].userDetials){
@@ -102,9 +93,9 @@ this.apiData= await this.service.httpPostRequest(this.utils.URLs.getLimitedUsers
 }
 
   async ngOnInit() {
-   
-   await this.getData(); 
-    this.ArrayFiller();
+    this.getLimitedData();
+  //  await this.getData(); 
+    // this.ArrayFiller();
     
   
   }
@@ -269,5 +260,102 @@ updateBtn(){
       this.GetAgain();
   
     }}
+
+
+
+    //  GET LIMITED USEER DATA
+    async getLimitedData(){
+
+      let params = new HttpParams()
+     params=params.set('startIndex', this.startIndex)  
+     params=params.set('endIndex', this.endIndex);  
+
+
+  
+      
+
+      let headers= new HttpHeaders()
+
+      if(localStorage.getItem('token')){
+      headers=headers.set('token',localStorage.getItem('token') as string);
+      }
+  
+      this.service.HTTPGetRequest(this.utils.URLs.getLimitedUsers,headers,params).subscribe({
+        next:(data)=>{console.log('DATA OF LIMITED USERS IS ',data);
+        }
+      })
+      }
+
+
+
+      globalObject=this;
+
+
+      func(){
+        console.log('fun called ',this);
+        const body={name:this};
+        let headers= new HttpHeaders()
+
+  if(localStorage.getItem('token')){
+  headers=headers.set('token',localStorage.getItem('token') as string);
+  
+  }
+
+  console.log('REQYEST GIUBG TI VISIT ');
+
+  const service=inject(CommonService)
+  console.log('SERVICE IS ',service);
+  
+//   service.HTTPPostRequest(this.utils.URLs.searchUser,body,headers).subscribe((data)=>{
+//   console.log('DATA IS ',data);
+  
+//  })
+        
+      }
+
+      inputValue:string='';
+    array:any=[];
+    timeout:any;
+
+
+    @ViewChild('myInput') myInput:ElementRef | undefined;
+      // SEARCH WITH DEBOUNCE
+      UpdateText(){
+          
+        
+        //  console.log('vak US ',val);
+         
+       
+        
+        // clearTimeout(this.timeout);
+      
+        
+        //   this.timeout = setTimeout(() => this.func.apply(val), 2000)
+        // console.log('timer is ',this.timeout);
+
+
+
+
+        // ------------------------
+        // var input = document.querySelector('input');
+
+
+         
+        var observable = fromEvent(this.myInput?.nativeElement, 'input');
+        console.log('OBSERVABLE IS ',observable);
+        let x=observable.pipe(
+          debounceTime(5000),
+         
+          )
+
+        console.log('x s ',x);
+        
+        x.subscribe((data)=>{
+          console.log('data i s ',data);
+          
+        })
+      }
+
+    
 
 }

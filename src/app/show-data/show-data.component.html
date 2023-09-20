@@ -1,5 +1,5 @@
 
-<input type="text" [(ngModel)]="search_text">
+<input type="text" #myInput (keyup)="UpdateText()">
 <button (click)="search_data()">Search Bar</button>
   <table *ngIf="apiData!=null">
     <thead>

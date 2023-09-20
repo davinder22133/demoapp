@@ -160,17 +160,17 @@ async createuserDetails(){
 
  this.service.HTTPPostRequest(this.utils.URLs.getParticularUser,body,headers).subscribe({
   next:(response:any)=>{
-  console.log('RESPONSE IS ',response);
+
   
-    return;
+   
     if(response.data.userDetials){
     
-      Object.keys(this.HttpResponse.data.userDetials).forEach((e)=>{
+      Object.keys(response.data.userDetials).forEach((e)=>{
        
-          if(Array.isArray(this.HttpResponse.data.userDetials[e])){
+          if(Array.isArray(response.data.userDetials[e])){
            
             
-        for(let i=0;i<this.HttpResponse.data.userDetials[e].length-1;i++){
+        for(let i=0;i<response.data.userDetials[e].length-1;i++){
         
           
             this.addForm(e);
@@ -201,35 +201,14 @@ async createuserDetails(){
   }
 
   async logout(){
-  //  localStorage.removeItem('userObject');
+ 
    let email=this.service.getLocalStorage().EmailEntered;
-  // localStorage.clear()
-  //  this.HttpResponse=await this.service.httpPostRequest(this.utils.URLs.checkUserUrl,{email:email}).toPromise()
-   
-   
-  //   if(this.HttpResponse.data.userType=='facebook' || this.HttpResponse.data.userType=='google'){
-  //     this.signOut();
-     
-  //   }
+
   
   localStorage.removeItem('userObject');
   localStorage.removeItem('token');
     this.router.navigate(['/home']);
   }
-  // id:any
-  // ngOnInit() {
 
-  //   // alert('ngoniit called ')
-    
-  //   this.activatedRoute.paramMap.subscribe((params:any) => {
-  //     console.log('params i s ',params.params._id);
-      
-  //     this.id = params.params._id;
-  //    console.log('id coming is ',this.id);
-  //    if(this.id==null) return;
-  //     const body={_id:this.id};
-  //     this.PatchData(body)
-  //   })
-  // }
 
 }
